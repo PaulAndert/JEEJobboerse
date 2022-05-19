@@ -17,21 +17,20 @@ public class ExampleUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    	
-    	ExampleUserDetails exampleUserDetails = userRepository.findByEmail(username)
-    			.map(user -> {
-    				return ExampleUserDetails.builder()
-    						.username(user.getEmail())
-    	                    .password(user.getPassword())
-    	                    .authorities(List.of(new UserAuthority()))
-    	                    .enabled(user.isEnabled())
-    	                    .accountNonExpired(true)
-    	                    .accountNonLocked(true)
-    	                    .credentialsNonExpired(true)
-    						.build();
-    			})
-    			.orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-    	
-    	return exampleUserDetails;
+
+		return userRepository.findByEmail(username)
+				.map(user -> {
+					return ExampleUserDetails.builder()
+							.username(user.getEmail())
+							.password(user.getPassword())
+							.authorities(List.of(new UserAuthority()))
+							.enabled(user.isEnabled())
+							.roleId(user.getRoleId())
+							.accountNonExpired(true)
+							.accountNonLocked(true)
+							.credentialsNonExpired(true)
+							.build();
+				})
+				.orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
 }

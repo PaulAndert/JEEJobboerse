@@ -10,5 +10,4 @@ public class UserAuthority implements GrantedAuthority {
     public String getAuthority() {
         return ROLE_USER;
     }
-
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
 	layout:decorate="~{layout}">
 <head>
 <meta charset="UTF-8">
@@ -7,9 +8,26 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<div sec:authorize="isAuthenticated()">
-			<p>Hello</p>
+		<th:div sec:authorize="${hasRole(T(de.thb.jee.authexample.security.authority.UserAuthority).ROLE_USER)}">
+			<h1>test this shit</h1>
+		</th:div>
+		<span sec:authentication="principal.authorities">Roles</span>
+
+		<div sec:authorize="hasAnyAuthority('ROLE_USER')">
+			<h1>ROLE_USER</h1>
 		</div>
+		<div sec:authorize="hasAnyAuthority('Test')">
+			<h1>Test</h1>
+		</div>
+<!--
+		<th:div sec:authorize="${hasRole(T(de.thb.jee.authexample.security.authority.UserAuthority).ROLE_USER)}">
+			<h1>shit</h1>
+		</th:div>
+		<div th:switch="${user.roleId}">
+			<p th:case="${1}">1</p>
+			<p th:case="*">2</p>
+		</div>
+			!-->
 	</div>
 </body>
 </html>
