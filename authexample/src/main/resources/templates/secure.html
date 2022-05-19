@@ -8,26 +8,42 @@
 </head>
 <body>
 	<div layout:fragment="content">
+		<!--
 		<th:div sec:authorize="${hasRole(T(de.thb.jee.authexample.security.authority.UserAuthority).ROLE_USER)}">
 			<h1>test this shit</h1>
 		</th:div>
-		<span sec:authentication="principal.authorities">Roles</span>
+		!-->
+		<div sec:authorize="hasAnyAuthority('ROLE_FIRMA')">
+			<h1>das können nur Firmenuser sehen</h1>
+		</div>
+		<div sec:authorize="hasAnyAuthority('ROLE_JOBSUCHENDER')">
+			<h1>das können nur Jobsuchende sehen</h1>
+		</div>
 
+		<!--
+		<span sec:authentication="principal.authorities"></span>
+		<div th:switch="" th:with=sec:authentication='principal.authorities'>
+			<p th:case="[ROLE_FIRMA]">1</p>
+			<p th:case="*">2</p>
+		</div>
+		!-->
+		<!--
 		<div sec:authorize="hasAnyAuthority('ROLE_USER')">
 			<h1>ROLE_USER</h1>
 		</div>
 		<div sec:authorize="hasAnyAuthority('Test')">
 			<h1>Test</h1>
 		</div>
-<!--
 		<th:div sec:authorize="${hasRole(T(de.thb.jee.authexample.security.authority.UserAuthority).ROLE_USER)}">
 			<h1>shit</h1>
 		</th:div>
-		<div th:switch="${user.roleId}">
-			<p th:case="${1}">1</p>
+		!-->
+		<!--
+		<div th:switch="<span sec:authentication='principal.authorities'>Roles</span>">Roles
+			<p th:case="[ROLE_FIRMA]">1</p> ${[Test]}
 			<p th:case="*">2</p>
 		</div>
-			!-->
+		!-->
 	</div>
 </body>
 </html>
