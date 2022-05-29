@@ -8,14 +8,14 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Spring-Boot-Auth-Example</h1>
+		<h1>Jobbörse</h1>
 		
 		<div sec:authorize="isAuthenticated()">
     		<span class="badge badge-dark" th:inline="text">Angemeldet als <span th:text="${#authentication.name}"></span></span>  
     	</div>
   
 		<nav class="navbar navbar-expand-lg navbar-light bg-light mt-5">
-  			<a class="navbar-brand" href="#">Navbar</a>
+  			<a class="navbar-brand" href="#"></a>
   			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     			<span class="navbar-toggler-icon"></span>
   			</button>
@@ -25,8 +25,11 @@
         				<a class="nav-link" href="/">Home</a>
       				</li>
       				<li class="nav-item">
-        			<a class="nav-link" href="/secure">Restricted</a>
+        			<a class="nav-link" href="/secure">Profil</a>
       				</li>
+					<li class="nav-item" sec:authorize="isAuthenticated()">
+						<a class="nav-link" href="/search">Suchen</a>
+					</li>
     			</ul>
     			<ul class="nav navbar-nav navbar-right">
     				<li class="nav-item" sec:authorize="!isAuthenticated()">
@@ -36,6 +39,7 @@
     					<a class="nav-link" href="/logout">Abmelden</a>
     				</li>
     			</ul>
+
   			</div>
 		</nav>
 	

@@ -15,7 +15,7 @@ Es muss das Tabellenschema, analog zur Vorlage unter \database\db-schema.sql in 
 
 ## Beispielnutzer
 
-Im Beispielschema wurde ein Beispielnutzer `test@test.de` mit dem Passwort `geheim` bereitgestellt.
+Im Beispielschema wurde ein Beispielnutzer `dataTransfer@dataTransfer.de` mit dem Passwort `geheim` bereitgestellt.
 
 
 

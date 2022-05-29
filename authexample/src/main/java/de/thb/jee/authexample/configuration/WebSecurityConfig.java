@@ -25,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// @formatter:off
 		http
 			.authorizeRequests()
-				//.antMatchers("/secure").hasAnyAuthority("ROLE_FIRMA", "ROLE_JOBSUCHENDER")
+				//.antMatchers("/secure")
 				.antMatchers("/css/**", "/webjars/**", "/bootstrap/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
 				.antMatchers("/", "/home").permitAll()
 				.anyRequest().authenticated()

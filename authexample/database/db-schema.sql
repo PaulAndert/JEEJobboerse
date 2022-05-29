@@ -12,7 +12,7 @@ CREATE TABLE `user` (
 
 
 INSERT INTO `user` (`id`, `email`, `password`, `date_created`, `enabled`) VALUES
-(1, 'test@test.de', '{bcrypt}$2a$10$yJixZy/KbspjVj8USGV1O.OXDPxOiT2w2HXZMBRl6aGNDNK1QU2Yi', '2020-10-25 17:19:49', 1);
+(1, 'dataTransfer@dataTransfer.de', '{bcrypt}$2a$10$yJixZy/KbspjVj8USGV1O.OXDPxOiT2w2HXZMBRl6aGNDNK1QU2Yi', '2020-10-25 17:19:49', 1);
 
 
 ALTER TABLE `user`

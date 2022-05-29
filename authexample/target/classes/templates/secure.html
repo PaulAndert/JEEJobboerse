@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
-	layout:decorate="~{layout}">
+	  layout:decorate="~{layout}">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
 </head>
 <body>
 	<div layout:fragment="content">
-		<!--
-		<th:div sec:authorize="${hasRole(T(de.thb.jee.authexample.security.authority.UserAuthority).ROLE_USER)}">
-			<h1>test this shit</h1>
-		</th:div>
-		!-->
+
 		<div sec:authorize="hasAnyAuthority('ROLE_FIRMA')">
 			<h1>das können nur Firmenuser sehen</h1>
 		</div>
@@ -20,29 +16,27 @@
 			<h1>das können nur Jobsuchende sehen</h1>
 		</div>
 
-		<!--
-		<span sec:authentication="principal.authorities"></span>
-		<div th:switch="" th:with=sec:authentication='principal.authorities'>
-			<p th:case="[ROLE_FIRMA]">1</p>
-			<p th:case="*">2</p>
+		<span>Email: </span>
+		<span th:text ="${#authentication.getPrincipal().getUsername()}"></span>
+		<br>
+		<span>Role: </span>
+		<span th:text ="${#authentication.getPrincipal().getRoleId()}"></span>
+		<br>
+		<div th:switch="${#authentication.getPrincipal().getRoleId()}">
+			<div th:case="1">
+				<p>SWITCH : Firmenuser</p>
+			</div>
+			<div th:case="2">
+				<p>SWITCH : Jobsuchende</p>
+			</div>
 		</div>
-		!-->
-		<!--
-		<div sec:authorize="hasAnyAuthority('ROLE_USER')">
-			<h1>ROLE_USER</h1>
-		</div>
-		<div sec:authorize="hasAnyAuthority('Test')">
-			<h1>Test</h1>
-		</div>
-		<th:div sec:authorize="${hasRole(T(de.thb.jee.authexample.security.authority.UserAuthority).ROLE_USER)}">
-			<h1>shit</h1>
-		</th:div>
-		!-->
-		<!--
-		<div th:switch="<span sec:authentication='principal.authorities'>Roles</span>">Roles
-			<p th:case="[ROLE_FIRMA]">1</p> ${[Test]}
-			<p th:case="*">2</p>
-		</div>
+
+		<form>
+
+		</form>
+
+		<!-- Auf die parameter des users zugreifen = #authentication.getPrincipal()
+		<span th:text ="${#authentication.getPrincipal().getRoleId()}"></span>
 		!-->
 	</div>
 </body>
