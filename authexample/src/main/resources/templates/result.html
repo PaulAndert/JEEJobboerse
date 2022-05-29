@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <p th:text="${dataTransfer.eingabe}"> </p>
+    <p th:text="${dataTransfer.roleId}"> </p>
+    <div th:each="dat: ${data}">
+        <span th:text="${dat.getUsername()}"></span>
+    </div>
+</div>
+</body>
+</html>
