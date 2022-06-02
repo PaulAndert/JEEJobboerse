@@ -2,10 +2,8 @@ package de.thb.jee.authexample.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -23,4 +21,6 @@ public class KompetenzenEntity {
 
     private String beschreibung;
 
+    @ManyToMany(mappedBy = "UserEntity")
+    private List<UserEntity> users ;
 }

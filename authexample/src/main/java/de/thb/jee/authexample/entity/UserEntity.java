@@ -45,4 +45,9 @@ public class UserEntity {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable
 	private List<AbschlussEntity> Abschluesse;
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable
+	private List<KompetenzenEntity>kompetenzenEntities ;
 }
+
