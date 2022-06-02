@@ -41,6 +41,5 @@ public class ExampleController {
 		model.addAttribute("dataTransfer", dataTransfer);
 		model.addAttribute("data", test);
 		return "result";
-
 	}
 }

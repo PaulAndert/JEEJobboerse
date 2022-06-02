@@ -31,4 +31,15 @@ public class UserEntity {
 
 	private int roleId;
 
+	private String vorname;
+
+	private String nachname;
+
+	private String adresse;
+
+	private String unternehmensname;
+
+	private int unternehmensregisternr;
+
+	private String beschreibung;
 }
