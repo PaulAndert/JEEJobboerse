@@ -22,6 +22,7 @@
 		<span>Role: </span>
 		<span th:text ="${#authentication.getPrincipal().getRoleId()}"></span>
 		<br>
+
 		<div th:switch="${#authentication.getPrincipal().getRoleId()}">
 			<div th:case="1">
 				<p>SWITCH : Firmenuser</p>
