@@ -1,15 +1,14 @@
 package de.thb.jee.authexample.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -42,4 +41,8 @@ public class UserEntity {
 	private int unternehmensregisternr;
 
 	private String beschreibung;
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable
+	private List<AbschlussEntity> Abschluesse;
 }
