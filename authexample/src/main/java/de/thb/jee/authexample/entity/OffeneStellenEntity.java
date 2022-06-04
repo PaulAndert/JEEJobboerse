@@ -13,9 +13,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Offene Stellen")
+@Entity(name = "offene_stelle")
 @Builder
 @ToString
+@Table(name = "offene_stelle")
 public class OffeneStellenEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +28,11 @@ public class OffeneStellenEntity {
 
     private int userId;
 
-    @ManyToMany(mappedBy = "UserEntity")
-    private List<UserEntity> users;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "offene_stelle_besitzt_kompetenz",
+            joinColumns = {
+                    @JoinColumn(name = "offene_stelle_id", referencedColumnName = "id", nullable = false, updatable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "kompetenz_id", referencedColumnName = "id", nullable = false, updatable = false)})
+    private List<KompetenzenEntity> offeneStelleKompetenzen ;
 }

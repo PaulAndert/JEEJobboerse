@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div layout:fragment="content">
-
+		<!--
 		<div sec:authorize="hasAnyAuthority('ROLE_FIRMA')">
 			<h1>das können nur Firmenuser sehen</h1>
 		</div>
@@ -22,12 +22,43 @@
 		<span>Role: </span>
 		<span th:text ="${#authentication.getPrincipal().getRoleId()}"></span>
 		<br>
-		<div th:switch="${#authentication.getPrincipal().getRoleId()}">
+		!-->
+
+		<div th:switch="${user.getRoleId()}">
 			<div th:case="1">
 				<p>SWITCH : Firmenuser</p>
+
+				<p th:text="${user.getUnternehmensname() + ' (' + user.getUnternehmensregisternr() + ')'}" ></p>
+
+				<p th:text="${user.getAdresse()}" ></p>
+				<p th:text="${user.getEmail()}" ></p>
+
+				<h3>Meine Beschreibung:</h3>
+				<p th:text="${user.getBeschreibung()}"></p>
+
+				<!-- Hier dann noch alle offenen Stellen die in der user id diese user user id haben displayen rein!-->
+
 			</div>
 			<div th:case="2">
 				<p>SWITCH : Jobsuchende</p>
+
+				<p th:text="${user.getVorname()} + ' ' + ${user.getNachname()}" ></p>
+
+				<p th:text="${user.getAdresse()}" ></p>
+				<p th:text="${user.getEmail()}" ></p>
+
+				<h3>Meine Beschreibung:</h3>
+				<p th:text="${user.getBeschreibung()}"></p>
+
+				<h3>Meine Abschlüsse:</h3>
+				<div th:each="ab: ${user.getUserAbschluesse()}">
+					<p th:text="${ab.getName()}"></p>
+				</div>
+
+				<h3>Meine Kompetenzen:</h3>
+				<ul th:each="uk: ${user.getUserKompetenzen()}">
+					<li th:text="${uk.getName()}"></li>
+				</ul>
 			</div>
 		</div>
 

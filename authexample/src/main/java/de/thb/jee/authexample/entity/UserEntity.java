@@ -16,6 +16,7 @@ import java.util.List;
 @Entity(name = "user")
 @Builder
 @ToString
+@Table(name = "user")
 public class UserEntity {
 
 	@Id
@@ -38,19 +39,23 @@ public class UserEntity {
 
 	private String unternehmensname;
 
-	private int unternehmensregisternr;
+	private String unternehmensregisternr;
 
 	private String beschreibung;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable
-	private List<AbschlussEntity> Abschluesse;
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "user_besitzt_abschluss",
+			joinColumns = {
+			@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = false)},
+			inverseJoinColumns = {
+			@JoinColumn(name = "abschluss_id", referencedColumnName = "id", nullable = false, updatable = false)})
+	private List<AbschlussEntity> userAbschluesse;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable
-	private List<OffeneStellenEntity> offeneStellen;
-
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable
-	private List<KompetenzenEntity>kompetenzenEntities ;
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "user_besitzt_kompetenz",
+			joinColumns = {
+					@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = false)},
+			inverseJoinColumns = {
+					@JoinColumn(name = "kompetenz_id", referencedColumnName = "id", nullable = false, updatable = false)})
+	private List<KompetenzenEntity> userKompetenzen ;
 }

@@ -31,6 +31,7 @@ public class ExampleUserDetailsService implements UserDetailsService {
 						.authorities(List.of(new UserAuthority()))
 						.enabled(user.isEnabled())
 						.roleId(user.getRoleId())
+						//.vorname(user.getVorname())
 						.accountNonExpired(true)
 						.accountNonLocked(true)
 						.credentialsNonExpired(true)
@@ -49,6 +50,7 @@ public class ExampleUserDetailsService implements UserDetailsService {
 						.authorities(List.of(new UserAuthority()))
 						.enabled(rot.isEnabled())
 						.roleId(rot.getRoleId())
+						//.vorname(rot.getVorname())
 						.accountNonExpired(true)
 						.accountNonLocked(true)
 						.credentialsNonExpired(true)
@@ -56,5 +58,9 @@ public class ExampleUserDetailsService implements UserDetailsService {
 			}
 		}
 		return ret;
+	}
+
+	public UserEntity leadCurrentUser(String str) throws UsernameNotFoundException {
+		return userRepository.findUserEntitiesByEmail(str);
 	}
 }

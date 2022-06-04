@@ -8,9 +8,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Abschluss")
+@Entity(name = "abschluss")
 @Builder
 @ToString
+@Table(name = "abschluss")
 public class AbschlussEntity {
 
     @Id
@@ -21,7 +22,8 @@ public class AbschlussEntity {
 
     private String beschreibung;
 
-    @ManyToMany(mappedBy = "UserEntity")
-    private List<UserEntity> users;
+    @ManyToMany(mappedBy = "userAbschluesse", fetch = FetchType.LAZY)
+    private List<UserEntity> abschlussUsers;
+
 
 }

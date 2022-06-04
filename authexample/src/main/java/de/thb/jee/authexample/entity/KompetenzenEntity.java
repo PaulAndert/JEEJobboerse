@@ -8,9 +8,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Kompetenzen")
+@Entity(name = "kompetenzen")
 @Builder
 @ToString
+@Table(name = "kompetenzen")
 public class KompetenzenEntity {
 
     @Id
@@ -21,6 +22,9 @@ public class KompetenzenEntity {
 
     private String beschreibung;
 
-    @ManyToMany(mappedBy = "UserEntity")
-    private List<UserEntity> users ;
+    @ManyToMany(mappedBy = "userKompetenzen")
+    private List<UserEntity> KompetenzUsers ;
+
+    @ManyToMany(mappedBy = "offeneStelleKompetenzen")
+    private List<OffeneStellenEntity> KompetenzOffeneStellen;
 }

@@ -14,8 +14,8 @@ import de.thb.jee.authexample.entity.UserEntity;
 public interface UserRepository extends CrudRepository<UserEntity, Long> {
 //	@Query("SELECT n FROM UserEntity n WHERE n.email = :email")
 //	Optional<UserEntity> findByEmail(@Param("email") String email);
-	
+	UserEntity findUserEntitiesByEmail(String email);
 	Optional<UserEntity> findByEmail(String email);
 	List<UserEntity> findUserEntitiesByEmailContains(String str);
-	List<UserEntity> findUserEntitiesByAbschluesseContains(String str);
+//	List<UserEntity> findUserEntitiesByAbschluesseContains(String str);
 }
