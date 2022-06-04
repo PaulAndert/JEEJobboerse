@@ -1,5 +1,7 @@
 package de.thb.jee.authexample.configuration;
 
+import de.thb.jee.authexample.repository.OffeneStellenRepository;
+import de.thb.jee.authexample.service.OffeneStellenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +21,14 @@ public class SecurityConfiguration {
     @Bean
     public UserDetailsService userDetailsService() {
         return new ExampleUserDetailsService(userRepository);
+    }
+
+    @Autowired
+    private OffeneStellenRepository offeneStellenRepository;
+
+    @Bean
+    public OffeneStellenService offeneStellenService() {
+        return new OffeneStellenService(offeneStellenRepository);
     }
 
     @Bean

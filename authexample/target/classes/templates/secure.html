@@ -15,7 +15,6 @@
 		<div sec:authorize="hasAnyAuthority('ROLE_JOBSUCHENDER')">
 			<h1>das können nur Jobsuchende sehen</h1>
 		</div>
-
 		<span>Email: </span>
 		<span th:text ="${#authentication.getPrincipal().getUsername()}"></span>
 		<br>
@@ -26,36 +25,44 @@
 
 		<div th:switch="${user.getRoleId()}">
 			<div th:case="1">
-				<p>SWITCH : Firmenuser</p>
 
-				<p th:text="${user.getUnternehmensname() + ' (' + user.getUnternehmensregisternr() + ')'}" ></p>
+				<p th:text="${'Name: ' + user.getUnternehmensname() + ' (' + user.getUnternehmensregisternr() + ')'}"></p>
 
-				<p th:text="${user.getAdresse()}" ></p>
-				<p th:text="${user.getEmail()}" ></p>
+				<p th:text="${'Adresse: ' + user.getAdresse()}" ></p>
+				<p th:text="${'Email: ' + user.getEmail()}" ></p>
 
-				<h3>Meine Beschreibung:</h3>
+				<h5>Meine Beschreibung:</h5>
 				<p th:text="${user.getBeschreibung()}"></p>
+
+				<ul>
+					<li th:each="offen: ${offeneStellen}">
+						<p th:text="${offen.getBeschreibung()}"></p>
+						<p th:text="${offen.getGehalt()}"></p>
+						<ul th:each=" kompetenz: ${offen.getOffeneStelleKompetenzen()}">
+							<li th:text="${kompetenz.getBeschreibung()}"></li>
+						</ul>
+					</li>
+				</ul>
 
 				<!-- Hier dann noch alle offenen Stellen die in der user id diese user user id haben displayen rein!-->
 
 			</div>
 			<div th:case="2">
-				<p>SWITCH : Jobsuchende</p>
 
-				<p th:text="${user.getVorname()} + ' ' + ${user.getNachname()}" ></p>
+				<p th:text="${'Name: ' + user.getVorname()} + ' ' + ${user.getNachname()}" ></p>
 
-				<p th:text="${user.getAdresse()}" ></p>
-				<p th:text="${user.getEmail()}" ></p>
+				<p th:text="${'Adresse: ' + user.getAdresse()}" ></p>
+				<p th:text="${'Email: ' + user.getEmail()}" ></p>
 
-				<h3>Meine Beschreibung:</h3>
+				<h5>Meine Beschreibung:</h5>
 				<p th:text="${user.getBeschreibung()}"></p>
 
-				<h3>Meine Abschlüsse:</h3>
-				<div th:each="ab: ${user.getUserAbschluesse()}">
-					<p th:text="${ab.getName()}"></p>
-				</div>
+				<h5>Meine Abschlüsse:</h5>
+				<ul th:each="ab: ${user.getUserAbschluesse()}">
+					<li th:text="${ab.getName()}"></li>
+				</ul>
 
-				<h3>Meine Kompetenzen:</h3>
+				<h5>Meine Kompetenzen:</h5>
 				<ul th:each="uk: ${user.getUserKompetenzen()}">
 					<li th:text="${uk.getName()}"></li>
 				</ul>

@@ -25,36 +25,44 @@
 
 		<div th:switch="${user.getRoleId()}">
 			<div th:case="1">
-				<p>SWITCH : Firmenuser</p>
 
-				<p th:text="${user.getUnternehmensname() + ' (' + user.getUnternehmensregisternr() + ')'}" ></p>
+				<p th:text="${'Name: ' + user.getUnternehmensname() + ' (' + user.getUnternehmensregisternr() + ')'}"></p>
 
-				<p th:text="${user.getAdresse()}" ></p>
-				<p th:text="${user.getEmail()}" ></p>
+				<p th:text="${'Adresse: ' + user.getAdresse()}" ></p>
+				<p th:text="${'Email: ' + user.getEmail()}" ></p>
 
-				<h4>Meine Beschreibung:</h4>
+				<h5>Meine Beschreibung:</h5>
 				<p th:text="${user.getBeschreibung()}"></p>
+
+				<ul>
+					<li th:each="offen: ${offeneStellen}">
+						<p th:text="${offen.getBeschreibung()}"></p>
+						<p th:text="${offen.getGehalt()}"></p>
+						<ul th:each=" kompetenz: ${offen.getOffeneStelleKompetenzen()}">
+							<li th:text="${kompetenz.getBeschreibung()}"></li>
+						</ul>
+					</li>
+				</ul>
 
 				<!-- Hier dann noch alle offenen Stellen die in der user id diese user user id haben displayen rein!-->
 
 			</div>
 			<div th:case="2">
-				<p>SWITCH : Jobsuchende</p>
 
-				<p th:text="${user.getVorname()} + ' ' + ${user.getNachname()}" ></p>
+				<p th:text="${'Name: ' + user.getVorname()} + ' ' + ${user.getNachname()}" ></p>
 
-				<p th:text="${user.getAdresse()}" ></p>
-				<p th:text="${user.getEmail()}" ></p>
+				<p th:text="${'Adresse: ' + user.getAdresse()}" ></p>
+				<p th:text="${'Email: ' + user.getEmail()}" ></p>
 
-				<h4>Meine Beschreibung:</h4>
+				<h5>Meine Beschreibung:</h5>
 				<p th:text="${user.getBeschreibung()}"></p>
 
-				<h4>Meine Abschlüsse:</h4>
+				<h5>Meine Abschlüsse:</h5>
 				<ul th:each="ab: ${user.getUserAbschluesse()}">
 					<li th:text="${ab.getName()}"></li>
 				</ul>
 
-				<h4>Meine Kompetenzen:</h4>
+				<h5>Meine Kompetenzen:</h5>
 				<ul th:each="uk: ${user.getUserKompetenzen()}">
 					<li th:text="${uk.getName()}"></li>
 				</ul>

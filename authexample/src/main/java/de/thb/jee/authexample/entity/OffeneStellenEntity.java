@@ -20,13 +20,13 @@ import java.util.List;
 public class OffeneStellenEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     private String beschreibung;
 
     private String gehalt;
 
-    private int userId;
+    private long userId;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "offene_stelle_besitzt_kompetenz",

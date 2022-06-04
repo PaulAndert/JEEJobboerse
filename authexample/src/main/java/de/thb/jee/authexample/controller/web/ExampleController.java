@@ -1,8 +1,10 @@
 package de.thb.jee.authexample.controller.web;
 
 import de.thb.jee.authexample.entity.DataTransfer;
+import de.thb.jee.authexample.entity.OffeneStellenEntity;
 import de.thb.jee.authexample.entity.UserEntity;
 import de.thb.jee.authexample.security.ExampleUserDetailsService;
+import de.thb.jee.authexample.service.OffeneStellenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +23,7 @@ import java.util.List;
 public class ExampleController {
 
 	private final ExampleUserDetailsService exampleUserDetailsService;
+	private final OffeneStellenService offeneStellenService;
 
 	@GetMapping("/")
 	public String showNotebooks() {
@@ -30,8 +33,12 @@ public class ExampleController {
 	@GetMapping("/secure")
 	public String securedPage(Model model) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity currentuser = exampleUserDetailsService.leadCurrentUser(((UserDetails) principal).getUsername());
-		model.addAttribute("user", currentuser);
+		UserEntity currentUser = exampleUserDetailsService.leadCurrentUser(((UserDetails) principal).getUsername());
+		if(currentUser.getRoleId() == 1){
+			List<OffeneStellenEntity> allOffeneStellenOfUser = offeneStellenService.getAllOffeneStellenOfUser(currentUser.getId());
+			model.addAttribute("offeneStellen", allOffeneStellenOfUser);
+		}
+		model.addAttribute("user", currentUser);
 		return "secure";
 	}
 

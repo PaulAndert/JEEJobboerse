@@ -1,13 +1,9 @@
 package de.thb.jee.authexample.security;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import de.thb.jee.authexample.entity.UserEntity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,7 +27,6 @@ public class ExampleUserDetailsService implements UserDetailsService {
 						.authorities(List.of(new UserAuthority()))
 						.enabled(user.isEnabled())
 						.roleId(user.getRoleId())
-						//.vorname(user.getVorname())
 						.accountNonExpired(true)
 						.accountNonLocked(true)
 						.credentialsNonExpired(true)
@@ -50,7 +45,6 @@ public class ExampleUserDetailsService implements UserDetailsService {
 						.authorities(List.of(new UserAuthority()))
 						.enabled(rot.isEnabled())
 						.roleId(rot.getRoleId())
-						//.vorname(rot.getVorname())
 						.accountNonExpired(true)
 						.accountNonLocked(true)
 						.credentialsNonExpired(true)
