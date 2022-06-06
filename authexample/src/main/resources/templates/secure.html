@@ -4,7 +4,9 @@
 	  layout:decorate="~{layout}">
 <head>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+	<title>JobBörse</title>
 </head>
 <body>
 	<div layout:fragment="content">
@@ -25,8 +27,8 @@
 
 		<div th:switch="${user.getRoleId()}">
 			<div th:case="1">
-
-				<p th:text="${'Name: ' + user.getUnternehmensname() + ' (' + user.getUnternehmensregisternr() + ')'}"></p>
+				<h5>Meine Daten:</h5>
+				<p th:text="${'Name: ' + user.getUnternehmensname() + ' (Nr. ' + user.getUnternehmensregisternr() + ')'}"></p>
 
 				<p th:text="${'Adresse: ' + user.getAdresse()}" ></p>
 				<p th:text="${'Email: ' + user.getEmail()}" ></p>
@@ -34,25 +36,21 @@
 				<h5>Meine Beschreibung:</h5>
 				<p th:text="${user.getBeschreibung()}"></p>
 
-				<ul>
-					<li th:each="offen: ${offeneStellen}">
-						<p th:text="${offen.getBeschreibung()}"></p>
-						<p th:text="${offen.getGehalt()}"></p>
-						<ul th:each=" kompetenz: ${offen.getOffeneStelleKompetenzen()}">
-							<li th:text="${kompetenz.getBeschreibung()}"></li>
-						</ul>
-					</li>
-				</ul>
-
-				<!-- Hier dann noch alle offenen Stellen die in der user id diese user user id haben displayen rein!-->
-
+				<h5>Meine aktuell angebotenen Stellenangebote:</h5>
+				<div th:each="offen: ${offeneStellen}" class="border border-dark rounded-3 p-2 m-2">
+					<p th:text="${'Beschreibung: ' + offen.getBeschreibung()}"></p>
+					<p th:text="${'Gehalt: ' + offen.getGehalt()}"></p>
+					<span>Kompetenzen: </span>
+					<ul th:each=" kompetenz: ${offen.getOffeneStelleKompetenzen()}">
+						<li th:text="${kompetenz.getBeschreibung()}"></li>
+					</ul>
+				</div>
 			</div>
 			<div th:case="2">
-
-				<p th:text="${'Name: ' + user.getVorname()} + ' ' + ${user.getNachname()}" ></p>
-
-				<p th:text="${'Adresse: ' + user.getAdresse()}" ></p>
-				<p th:text="${'Email: ' + user.getEmail()}" ></p>
+				<h5>Meine Daten:</h5>
+				<p th:text="${'Name: ' + user.getVorname()} + ' ' + ${user.getNachname()}"></p>
+				<p th:text="${'Adresse: ' + user.getAdresse()}"></p>
+				<p th:text="${'Email: ' + user.getEmail()}"></p>
 
 				<h5>Meine Beschreibung:</h5>
 				<p th:text="${user.getBeschreibung()}"></p>

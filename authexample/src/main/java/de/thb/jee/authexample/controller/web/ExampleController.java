@@ -1,9 +1,9 @@
 package de.thb.jee.authexample.controller.web;
 
-import de.thb.jee.authexample.entity.DataTransfer;
-import de.thb.jee.authexample.entity.OffeneStellenEntity;
-import de.thb.jee.authexample.entity.UserEntity;
+import de.thb.jee.authexample.entity.*;
 import de.thb.jee.authexample.security.ExampleUserDetailsService;
+import de.thb.jee.authexample.service.AbschlussService;
+import de.thb.jee.authexample.service.KompetenzService;
 import de.thb.jee.authexample.service.OffeneStellenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,6 +25,8 @@ public class ExampleController {
 
 	private final ExampleUserDetailsService exampleUserDetailsService;
 	private final OffeneStellenService offeneStellenService;
+	private final KompetenzService kompetenzService;
+	private final AbschlussService abschlussService;
 
 	@GetMapping("/")
 	public String showNotebooks() {
@@ -45,14 +48,55 @@ public class ExampleController {
 	@GetMapping("/search")
 	public String searchPage(Model model) {
 		model.addAttribute("dataTransfer", new DataTransfer());
+		model.addAttribute("kompetenzen", kompetenzService.getAllKompetenzen());
+		model.addAttribute("abschluesse", abschlussService.getAllAbschlüsse());
 		return "search";
 	}
 
 	@PostMapping("/search")
 	public String showresult(@ModelAttribute DataTransfer dataTransfer, Model model) {
-		List<UserDetails> test = exampleUserDetailsService.loadUserWithSearch(dataTransfer.getEingabe());
+		List<UserEntity> userEntities;
+
+		if (!dataTransfer.getBeschreibung().isBlank()) userEntities = exampleUserDetailsService.findAllByDescriptionAndRoleId(dataTransfer.getBeschreibung(), 2);
+		else userEntities = exampleUserDetailsService.loadByRoleId(2);
+
+		if(!dataTransfer.getKompetenz().isBlank()){
+			KompetenzenEntity kompetenzenEntity = kompetenzService.getByMatchingName(dataTransfer.getKompetenz());
+			userEntities.removeIf(ue -> !ue.getUserKompetenzen().contains(kompetenzenEntity));
+
+		}
+		if(!dataTransfer.getAbschluss().isBlank()){
+			AbschlussEntity abschlussEntity = abschlussService.getByMatchingName(dataTransfer.getAbschluss());
+			userEntities.removeIf(ue -> !ue.getUserAbschluesse().contains(abschlussEntity));
+		}
+
 		model.addAttribute("dataTransfer", dataTransfer);
-		model.addAttribute("data", test);
+		model.addAttribute("outputList", userEntities);
 		return "result";
 	}
+
+	/*
+	@PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Book create(@RequestBody Book book) {
+        return bookRepository.save(book);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        bookRepository.findById(id)
+          .orElseThrow(BookNotFoundException::new);
+        bookRepository.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
+        if (book.getId() != id) {
+          throw new BookIdMismatchException();
+        }
+        bookRepository.findById(id)
+          .orElseThrow(BookNotFoundException::new);
+        return bookRepository.save(book);
+    }
+	 */
 }

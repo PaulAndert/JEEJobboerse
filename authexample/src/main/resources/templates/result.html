@@ -4,15 +4,38 @@
       layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>JobBörse</title>
 </head>
 <body>
 <div layout:fragment="content">
-    <p th:text="${dataTransfer.eingabe}"> </p>
-    <p th:text="${dataTransfer.roleId}"> </p>
-    <div th:each="dat: ${data}">
-        <span th:text="${dat.getUsername()}"></span>
+
+    <div th:switch="${dataTransfer.getRoleId()}">
+
+        <div th:case="1">
+            <div th:each="output: ${outputList}" class="border border-dark rounded-3 p-2 m-2">
+                <p th:text="${'Name: ' + output.getVorname() + ' ' + output.getNachname()}"></p>
+                <p th:text="${'Email: ' + output.getEmail()}"></p>
+                <p th:text="${'Beschreibung: ' + output.getBeschreibung()}"></p>
+                <span>Abschlüsse: </span>
+                <ul th:each=" abschluss: ${output.getUserAbschluesse()}">
+                    <li th:text="${abschluss.getName()}"></li>
+                </ul>
+                <span>Kompetenzen: </span>
+                <ul th:each=" kompetenz: ${output.getUserKompetenzen()}">
+                    <li th:text="${kompetenz.getName()}"></li>
+                </ul>
+            </div>
+        </div>
+
+        <div th:case="2" th:each="output: ${outputList}" class="border border-dark rounded-3 p-2 m-2">
+            <p th:text="${output.getEmail()}"></p>
+            <p th:text="${output.getBeschreibung()}"></p>
+        </div>
+
     </div>
+
 </div>
 </body>
 </html>

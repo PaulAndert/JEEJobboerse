@@ -3,6 +3,8 @@ package de.thb.jee.authexample.security;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.thb.jee.authexample.entity.AbschlussEntity;
+import de.thb.jee.authexample.entity.KompetenzenEntity;
 import de.thb.jee.authexample.entity.UserEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -36,7 +38,7 @@ public class ExampleUserDetailsService implements UserDetailsService {
 
 	public List<UserDetails> loadUserWithSearch(String str) throws UsernameNotFoundException {
 		List<UserEntity> uebec = userRepository.findUserEntitiesByEmailContains(str);
-		List<UserDetails> ret = new ArrayList<UserDetails>();
+		List<UserDetails> ret = new ArrayList<>();
 		if(!uebec.isEmpty()) {
 			for (UserEntity rot : uebec) {
 				ret.add(ExampleUserDetails.builder()
@@ -56,5 +58,25 @@ public class ExampleUserDetailsService implements UserDetailsService {
 
 	public UserEntity leadCurrentUser(String str) throws UsernameNotFoundException {
 		return userRepository.findUserEntitiesByEmail(str);
+	}
+	/*
+	public List<UserEntity> loadAllUSersMatchingSeachParameters(String desc, long abschlussId, long kompetenzId){
+		List<UserEntity> uel = userRepository.search
+				(desc, abschlussId, kompetenzId);
+		List<UserEntity> ret = new ArrayList<>();
+		if(!uel.isEmpty()) return uel;
+		else return ret;
+	}
+	*/
+
+	public List<UserEntity> findAllByDescriptionAndRoleId(String str, int roleId){
+		return userRepository.findUserEntitiesByBeschreibungContainsAndRoleId(str, roleId);
+	}
+	public List<UserEntity> loadByRoleId(int roleId){
+		return userRepository.findUserEntitiesByRoleId(roleId);
+	}
+
+	public List<UserEntity> loadAll(){
+		return userRepository.findAll();
 	}
 }

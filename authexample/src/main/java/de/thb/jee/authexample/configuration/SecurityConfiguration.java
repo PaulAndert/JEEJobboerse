@@ -1,6 +1,10 @@
 package de.thb.jee.authexample.configuration;
 
+import de.thb.jee.authexample.repository.AbschlussRepository;
+import de.thb.jee.authexample.repository.KompetenzenRepository;
 import de.thb.jee.authexample.repository.OffeneStellenRepository;
+import de.thb.jee.authexample.service.AbschlussService;
+import de.thb.jee.authexample.service.KompetenzService;
 import de.thb.jee.authexample.service.OffeneStellenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +21,6 @@ public class SecurityConfiguration {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
     @Bean
     public UserDetailsService userDetailsService() {
         return new ExampleUserDetailsService(userRepository);
@@ -25,11 +28,20 @@ public class SecurityConfiguration {
 
     @Autowired
     private OffeneStellenRepository offeneStellenRepository;
-
     @Bean
     public OffeneStellenService offeneStellenService() {
         return new OffeneStellenService(offeneStellenRepository);
     }
+
+    @Autowired
+    private KompetenzenRepository kompetenzenRepository;
+    @Bean
+    public KompetenzService kompetenzenService() { return new KompetenzService(kompetenzenRepository); }
+
+    @Autowired
+    private AbschlussRepository abschlussRepository;
+    @Bean
+    public AbschlussService abschlussService() { return new AbschlussService(abschlussRepository); }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

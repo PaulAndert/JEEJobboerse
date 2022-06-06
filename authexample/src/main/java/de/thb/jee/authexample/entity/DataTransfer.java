@@ -9,6 +9,11 @@ import lombok.Data;
 @Data
 @NoArgsConstructor(access=AccessLevel.PUBLIC, force=true)
 public class DataTransfer {
-    private String eingabe;
     private int roleId;
+
+    private String beschreibung;
+    private String kompetenz;
+    private String abschluss;
+    private String gehalt;
+
 }
