@@ -14,6 +14,6 @@ public class DataTransfer {
     private String beschreibung;
     private String kompetenz;
     private String abschluss;
-    private String gehalt;
+    private long gehalt;
 
 }

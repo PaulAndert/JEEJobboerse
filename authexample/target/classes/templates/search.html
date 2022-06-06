@@ -43,15 +43,33 @@
 
             </div>
             <div th:case="2" th:with="Role=${#authentication.getPrincipal().getRoleId()}">
-                <p>Suche nach Jobs die angeboten werden</p>
 
                 <form th:object="${dataTransfer.setRoleId(Role)}"></form>
                 <h4 style="text-align: center">Nach Offenen Stellen suchen</h4>
-                <form action="#" th:action="@{/search}" th:object="${dataTransfer}" method="post">
-                    <p>Eingabe: <input type="text" th:field="*{beschreibung}" /></p>
+                <form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/search}" th:object="${dataTransfer}"  method="post">
+
+                    <div class="input-group flex-nowrap m-4">
+                        <span class="input-group-text" id="addon-wrapping">In Beschreibung suchen</span>
+                        <input type="text" th:field="*{beschreibung}" class="form-control" placeholder="..." aria-describedby="addon-wrapping">
+                    </div>
+
+                    <select th:field="*{kompetenz}" class="form-select m-4">
+                        <option value="" selected>Wähle eine Kompetenz aus:</option>
+                        <option th:each="kompetenz: ${kompetenzen}" th:value="${kompetenz.getName()}" th:text="${kompetenz.getName()}">
+                        </option>
+                    </select>
+
+                    <div class="input-group flex-nowrap m-4">
+                        <span class="input-group-text">Gib ein mindestgehalt ein</span>
+                        <input type="text" th:field="*{gehalt}" class="form-control" placeholder="..." aria-describedby="addon-wrapping">
+                    </div>
+
                     <p style="opacity: 0"> <input type="text" th:field="*{roleId}"/></p>
-                    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+                    <div class="col-sm-3" style="margin:0 auto;">
+                        <input class="btn btn-outline-dark" type="submit" value="Suchen"/>
+                    </div>
                 </form>
+
             </div>
         </div>
     </div>

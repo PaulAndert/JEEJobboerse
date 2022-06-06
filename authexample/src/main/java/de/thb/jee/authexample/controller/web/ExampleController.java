@@ -55,23 +55,42 @@ public class ExampleController {
 
 	@PostMapping("/search")
 	public String showresult(@ModelAttribute DataTransfer dataTransfer, Model model) {
-		List<UserEntity> userEntities;
-
-		if (!dataTransfer.getBeschreibung().isBlank()) userEntities = exampleUserDetailsService.findAllByDescriptionAndRoleId(dataTransfer.getBeschreibung(), 2);
-		else userEntities = exampleUserDetailsService.loadByRoleId(2);
-
-		if(!dataTransfer.getKompetenz().isBlank()){
-			KompetenzenEntity kompetenzenEntity = kompetenzService.getByMatchingName(dataTransfer.getKompetenz());
-			userEntities.removeIf(ue -> !ue.getUserKompetenzen().contains(kompetenzenEntity));
-
+		if(dataTransfer.getRoleId() == 1) {
+			List<UserEntity> userEntities;
+			if (!dataTransfer.getBeschreibung().isBlank())
+				userEntities = exampleUserDetailsService.findAllByDescriptionAndRoleId(dataTransfer.getBeschreibung(), 2);
+			else userEntities = exampleUserDetailsService.loadByRoleId(2);
+			if (!dataTransfer.getAbschluss().isBlank()) {
+				AbschlussEntity abschlussEntity = abschlussService.getByMatchingName(dataTransfer.getAbschluss());
+				userEntities.removeIf(ue -> !ue.getUserAbschluesse().contains(abschlussEntity));
+			}
+			if (!dataTransfer.getKompetenz().isBlank()) {
+				KompetenzenEntity kompetenzenEntity = kompetenzService.getByMatchingName(dataTransfer.getKompetenz());
+				userEntities.removeIf(ue -> !ue.getUserKompetenzen().contains(kompetenzenEntity));
+			}
+			model.addAttribute("outputList", userEntities);
+		}else{
+			List<OffeneStellenEntity> offeneStellenEntities;
+			if (!dataTransfer.getBeschreibung().isBlank()){
+				if(dataTransfer.getGehalt() != 0){
+					offeneStellenEntities = offeneStellenService.loadAllbyGehaltAndBeschreibung(dataTransfer.getGehalt(), dataTransfer.getBeschreibung());
+				}else{
+					offeneStellenEntities = offeneStellenService.loadAllbyBeschreibung(dataTransfer.getBeschreibung());
+				}
+			}else{
+				if(dataTransfer.getGehalt() != 0){
+					offeneStellenEntities = offeneStellenService.loadAllbyGehalt(dataTransfer.getGehalt());
+				}else{
+					offeneStellenEntities = offeneStellenService.loadAllOffeneStellen();
+				}
+			}
+			if (!dataTransfer.getKompetenz().isBlank()) {
+				KompetenzenEntity kompetenzenEntity = kompetenzService.getByMatchingName(dataTransfer.getKompetenz());
+				offeneStellenEntities.removeIf(ofe -> !ofe.getOffeneStelleKompetenzen().contains(kompetenzenEntity));
+			}
+			model.addAttribute("outputList", offeneStellenEntities);
 		}
-		if(!dataTransfer.getAbschluss().isBlank()){
-			AbschlussEntity abschlussEntity = abschlussService.getByMatchingName(dataTransfer.getAbschluss());
-			userEntities.removeIf(ue -> !ue.getUserAbschluesse().contains(abschlussEntity));
-		}
-
 		model.addAttribute("dataTransfer", dataTransfer);
-		model.addAttribute("outputList", userEntities);
 		return "result";
 	}
 
