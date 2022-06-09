@@ -14,16 +14,8 @@ public class OffeneStellenService {
     public List<OffeneStellenEntity> getAllOffeneStellenOfUser(long id){
         return offeneStellenRepository.findOffeneStellenEntitiesByUserId(id);
     }
-    public List<OffeneStellenEntity> loadAllbyGehaltAndBeschreibung(long gehalt, String desc){
-        return offeneStellenRepository.findOffeneStellenEntitiesByGehaltGreaterThanEqualAndBeschreibungContains(gehalt, desc);
-    }
-    public List<OffeneStellenEntity> loadAllbyGehalt(long gehalt){
-        return offeneStellenRepository.findOffeneStellenEntitiesByGehaltGreaterThanEqual(gehalt);
-    }
-    public List<OffeneStellenEntity> loadAllbyBeschreibung(String desc){
-        return offeneStellenRepository.findOffeneStellenEntitiesByBeschreibungContains(desc);
-    }
-    public List<OffeneStellenEntity> loadAllOffeneStellen(){
-        return offeneStellenRepository.findAll();
+
+    public List<OffeneStellenEntity> loadAllOffeneStellenMatchingSeachParameters(int gehalt, String desc, int KompetenzenId){
+        return offeneStellenRepository.search(gehalt, desc, KompetenzenId);
     }
  }

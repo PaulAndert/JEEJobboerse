@@ -32,7 +32,7 @@
         <div th:case="2">
             <div th:each="output: ${outputList}" class="border border-dark rounded-3 p-2 m-2">
                 <p th:text="${'Beschreibung: ' + output.getBeschreibung()}"></p>
-                <p th:text="${'Gehalt: ' + output.getGehalt() + ' pro monat'}"></p>
+                <p th:text="${'Gehalt: ' + output.getGehalt() + '€ pro monat'}"></p>
                 <span>Kompetenzen: </span>
                 <ul th:each=" kompetenz: ${output.getOffeneStelleKompetenzen()}">
                     <li th:text="${kompetenz.getName()}"></li>

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -56,38 +55,16 @@ public class ExampleController {
 	@PostMapping("/search")
 	public String showresult(@ModelAttribute DataTransfer dataTransfer, Model model) {
 		if(dataTransfer.getRoleId() == 1) {
-			List<UserEntity> userEntities;
-			if (!dataTransfer.getBeschreibung().isBlank())
-				userEntities = exampleUserDetailsService.findAllByDescriptionAndRoleId(dataTransfer.getBeschreibung(), 2);
-			else userEntities = exampleUserDetailsService.loadByRoleId(2);
-			if (!dataTransfer.getAbschluss().isBlank()) {
-				AbschlussEntity abschlussEntity = abschlussService.getByMatchingName(dataTransfer.getAbschluss());
-				userEntities.removeIf(ue -> !ue.getUserAbschluesse().contains(abschlussEntity));
-			}
-			if (!dataTransfer.getKompetenz().isBlank()) {
-				KompetenzenEntity kompetenzenEntity = kompetenzService.getByMatchingName(dataTransfer.getKompetenz());
-				userEntities.removeIf(ue -> !ue.getUserKompetenzen().contains(kompetenzenEntity));
-			}
+			int abschlussEntityId = 0;
+			if (!dataTransfer.getAbschluss().isBlank()) abschlussEntityId = (int) abschlussService.getByMatchingName(dataTransfer.getAbschluss()).getId();
+			int kompetenzenEntityId = 0;
+			if (!dataTransfer.getKompetenz().isBlank()) kompetenzenEntityId = (int) kompetenzService.getByMatchingName(dataTransfer.getKompetenz()).getId();
+			List<UserEntity> userEntities = exampleUserDetailsService.loadAllUsersMatchingSeachParameters("%" + dataTransfer.getBeschreibung() + "%", abschlussEntityId, kompetenzenEntityId);
 			model.addAttribute("outputList", userEntities);
 		}else{
-			List<OffeneStellenEntity> offeneStellenEntities;
-			if (!dataTransfer.getBeschreibung().isBlank()){
-				if(dataTransfer.getGehalt() != 0){
-					offeneStellenEntities = offeneStellenService.loadAllbyGehaltAndBeschreibung(dataTransfer.getGehalt(), dataTransfer.getBeschreibung());
-				}else{
-					offeneStellenEntities = offeneStellenService.loadAllbyBeschreibung(dataTransfer.getBeschreibung());
-				}
-			}else{
-				if(dataTransfer.getGehalt() != 0){
-					offeneStellenEntities = offeneStellenService.loadAllbyGehalt(dataTransfer.getGehalt());
-				}else{
-					offeneStellenEntities = offeneStellenService.loadAllOffeneStellen();
-				}
-			}
-			if (!dataTransfer.getKompetenz().isBlank()) {
-				KompetenzenEntity kompetenzenEntity = kompetenzService.getByMatchingName(dataTransfer.getKompetenz());
-				offeneStellenEntities.removeIf(ofe -> !ofe.getOffeneStelleKompetenzen().contains(kompetenzenEntity));
-			}
+			int kompetenzenEntityId = 0;
+			if (!dataTransfer.getKompetenz().isBlank()) kompetenzenEntityId = (int) kompetenzService.getByMatchingName(dataTransfer.getKompetenz()).getId();
+			List<OffeneStellenEntity> offeneStellenEntities = offeneStellenService.loadAllOffeneStellenMatchingSeachParameters((int) dataTransfer.getGehalt(), "%" + dataTransfer.getBeschreibung() + "%", kompetenzenEntityId);
 			model.addAttribute("outputList", offeneStellenEntities);
 		}
 		model.addAttribute("dataTransfer", dataTransfer);
