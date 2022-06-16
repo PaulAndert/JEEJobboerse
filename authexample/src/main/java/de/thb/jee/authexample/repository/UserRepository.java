@@ -29,4 +29,5 @@ public interface UserRepository extends CrudRepository<UserEntity, Long> {
 	 @Param("kompetenzenid") int kompetenzenid);
 
 	List<UserEntity> findAll();
+	UserEntity findById(long id);
 }

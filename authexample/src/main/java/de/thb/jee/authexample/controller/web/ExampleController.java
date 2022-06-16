@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -66,6 +67,15 @@ public class ExampleController {
 			if (!dataTransfer.getKompetenz().isBlank()) kompetenzenEntityId = (int) kompetenzService.getByMatchingName(dataTransfer.getKompetenz()).getId();
 			List<OffeneStellenEntity> offeneStellenEntities = offeneStellenService.loadAllOffeneStellenMatchingSeachParameters((int) dataTransfer.getGehalt(), "%" + dataTransfer.getBeschreibung() + "%", kompetenzenEntityId);
 			model.addAttribute("outputList", offeneStellenEntities);
+			List<String> email = new ArrayList<>();
+			for (int i = 0 ; i < offeneStellenEntities.size(); i++){
+				String mail= exampleUserDetailsService.userId(offeneStellenEntities.get(i).getUserId()).getEmail();
+				if(!mail.isBlank()) {
+					email.add(mail);
+				}else email.add("");
+			}
+			model.addAttribute("emailList", email);
+
 		}
 		model.addAttribute("dataTransfer", dataTransfer);
 		return "result";

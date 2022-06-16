@@ -40,4 +40,7 @@ public class ExampleUserDetailsService implements UserDetailsService {
 	public List<UserEntity> loadAllUsersMatchingSeachParameters(String desc, int abschlussId, int kompetenzId){
 		return userRepository.search(desc, abschlussId, kompetenzId);
 	}
+	public UserEntity userId(long id) throws UsernameNotFoundException {
+		return userRepository.findById(id);
+	}
 }
