@@ -1,7 +1,6 @@
 package de.thb.jee.authexample.controller.web;
 
 import de.thb.jee.authexample.entity.*;
-import de.thb.jee.authexample.security.ExampleUserDetailsService;
 import de.thb.jee.authexample.service.AbschlussService;
 import de.thb.jee.authexample.service.KompetenzService;
 import de.thb.jee.authexample.service.OffeneStellenService;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,24 +24,30 @@ import java.util.List;
 @RequestMapping
 public class ExampleController {
 
-	private final ExampleUserDetailsService exampleUserDetailsService;
 	private final UserService userService;
 	private final OffeneStellenService offeneStellenService;
 	private final KompetenzService kompetenzService;
 	private final AbschlussService abschlussService;
 
 	@GetMapping("/")
-	public String showNotebooks() {
+	public String showHomepage() {
 		return "home";
 	}
 
 	@GetMapping("/secure")
 	public String securedPage(Model model) {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity currentUser = userService.loadCurrentUser(((UserDetails) principal).getUsername());
+		UserEntity currentUser = userService.loadCurrentUser(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
 		if(currentUser.getRoleId() == 1){
 			List<OffeneStellenEntity> allOffeneStellenOfUser = offeneStellenService.getAllOffeneStellenOfUser(currentUser.getId());
 			model.addAttribute("offeneStellen", allOffeneStellenOfUser);
+		}else{
+			List<String> emailList = new ArrayList<>();
+			for (OffeneStellenEntity offeneStellenEntity : currentUser.getOffenenStellenBookmarks()) {
+				String emailString = userService.userId(offeneStellenEntity.getUserId()).getEmail();
+				if (!emailString.isBlank()) emailList.add(emailString);
+				else emailList.add("");
+			}
+			model.addAttribute("emailList", emailList);
 		}
 		model.addAttribute("user", currentUser);
 		return "secure";
@@ -49,14 +55,14 @@ public class ExampleController {
 
 	@GetMapping("/search")
 	public String searchPage(Model model) {
-		model.addAttribute("dataTransfer", new DataTransfer());
+		model.addAttribute("dataTransfer", new DataTransferEntity());
 		model.addAttribute("kompetenzen", kompetenzService.getAllKompetenzen());
 		model.addAttribute("abschluesse", abschlussService.getAllAbschlüsse());
 		return "search";
 	}
 
 	@PostMapping("/search")
-	public String showresult(@ModelAttribute DataTransfer dataTransfer, Model model) {
+	public String showresult(@ModelAttribute DataTransferEntity dataTransfer, Model model) {
 		if(dataTransfer.getRoleId() == 1) {
 			int abschlussEntityId = 0;
 			if (!dataTransfer.getAbschluss().isBlank()) abschlussEntityId = (int) abschlussService.getByMatchingName(dataTransfer.getAbschluss()).getId();
@@ -78,7 +84,18 @@ public class ExampleController {
 			model.addAttribute("emailList", emailList);
 		}
 		model.addAttribute("dataTransfer", dataTransfer);
+		BookmarkTransferEntity bte = new BookmarkTransferEntity();
+		bte.setRoleId(dataTransfer.getRoleId());
+		model.addAttribute("bookmarkTransfer", bte);
 		return "result";
+	}
+
+	@PostMapping("/result")
+	public RedirectView bookmark(@ModelAttribute BookmarkTransferEntity bookmarkTransfer){
+		UserEntity ue = userService.loadCurrentUser(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+		if(bookmarkTransfer.getRoleId() == 1) ue.getJobsuchendeBookmarks().add(userService.userId(bookmarkTransfer.getSecondId()));
+		else ue.getOffenenStellenBookmarks().add(offeneStellenService.getOffeneStelleById(bookmarkTransfer.getSecondId()));
+		return new RedirectView("/secure");
 	}
 
 	/*

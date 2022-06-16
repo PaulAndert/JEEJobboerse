@@ -13,6 +13,10 @@ public class OffeneStellenService {
 
     private final OffeneStellenRepository offeneStellenRepository;
 
+    public OffeneStellenEntity getOffeneStelleById(long id){
+        return offeneStellenRepository.findOffeneStellenEntitiesById(id);
+    }
+
     public List<OffeneStellenEntity> getAllOffeneStellenOfUser(long id){
         return offeneStellenRepository.findOffeneStellenEntitiesByUserId(id);
     }

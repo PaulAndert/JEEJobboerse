@@ -29,6 +29,25 @@
 						<li th:text="${kompetenz.getBeschreibung()}"></li>
 					</ul>
 				</div>
+				<h5>Bookmarks: </h5>
+				<div th:each="bookmark: ${user.getJobsuchendeBookmarks()}" class="border border-dark rounded-3 p-2 m-2">
+					<p th:text="${'Name: ' + bookmark.getVorname()} + ' ' + ${bookmark.getNachname()}"></p>
+					<p th:text="${'Adresse: ' + bookmark.getAdresse()}"></p>
+					<p th:text="${'Email: ' + bookmark.getEmail()}"></p>
+
+					<h5>Meine Beschreibung:</h5>
+					<p th:text="${bookmark.getBeschreibung()}"></p>
+
+					<h5>Meine Abschlüsse:</h5>
+					<ul th:each="ab: ${bookmark.getUserAbschluesse()}">
+						<li th:text="${ab.getName()}"></li>
+					</ul>
+
+					<h5>Meine Kompetenzen:</h5>
+					<ul th:each="uk: ${bookmark.getUserKompetenzen()}">
+						<li th:text="${uk.getName()}"></li>
+					</ul>
+				</div>
 			</div>
 			<div th:case="2">
 				<h5>Meine Daten:</h5>
@@ -48,6 +67,16 @@
 				<ul th:each="uk: ${user.getUserKompetenzen()}">
 					<li th:text="${uk.getName()}"></li>
 				</ul>
+				<h5>Bookmarks: </h5>
+				<div th:each="bookmark: ${user.getOffenenStellenBookmarks()}" class="border border-dark rounded-3 p-2 m-2">
+					<p th:text="${'Beschreibung: ' + bookmark.getBeschreibung()}"></p>
+					<p th:text="${'Gehalt: ' + bookmark.getGehalt() + '€ pro monat'}"></p>
+					<p th:text="${'Email: ' + emailList.get(user.getOffenenStellenBookmarks().indexOf(bookmark))}"></p>
+					<span>Kompetenzen: </span>
+					<ul th:each=" kompetenz: ${bookmark.getOffeneStelleKompetenzen()}">
+						<li th:text="${kompetenz.getName()}"></li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>

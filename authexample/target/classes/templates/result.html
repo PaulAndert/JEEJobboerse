@@ -26,6 +26,14 @@
                 <ul th:each=" kompetenz: ${output.getUserKompetenzen()}">
                     <li th:text="${kompetenz.getName()}"></li>
                 </ul>
+                <form th:object="${bookmarkTransfer.setSecondId(output.getId())}"></form>
+                <form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/result}" th:object="${bookmarkTransfer}"  method="post">
+                    <p><input type="hidden" th:field="*{roleId}"/></p>
+                    <p><input type="hidden" th:field="*{secondId}"/></p>
+                    <div class="col-sm-3" style="margin:0 auto;">
+                        <input class="btn btn-outline-dark" type="submit" value="Bookmark"/>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -38,6 +46,14 @@
                 <ul th:each=" kompetenz: ${output.getOffeneStelleKompetenzen()}">
                     <li th:text="${kompetenz.getName()}"></li>
                 </ul>
+                <form th:object="${bookmarkTransfer.setSecondId(output.getId())}"></form>
+                <form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/result}" th:object="${bookmarkTransfer}"  method="post">
+                    <p><input type="hidden" th:field="*{roleId}"/></p>
+                    <p><input type="hidden" th:field="*{secondId}"/></p>
+                    <div class="col-sm-3" style="margin:0 auto;">
+                        <input class="btn btn-outline-dark" type="submit" value="Bookmark"/>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

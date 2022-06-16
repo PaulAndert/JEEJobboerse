@@ -58,4 +58,20 @@ public class UserEntity {
 			inverseJoinColumns = {
 					@JoinColumn(name = "kompetenz_id", referencedColumnName = "id", nullable = false, updatable = false)})
 	private List<KompetenzenEntity> userKompetenzen ;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "user_bookmark_user",
+			joinColumns = {
+					@JoinColumn(name = "firmenuser_id", referencedColumnName = "id", nullable = false, updatable = false)},
+			inverseJoinColumns = {
+					@JoinColumn(name = "jobsuchendenuser_id", referencedColumnName = "id", nullable = false, updatable = false)})
+	private List<UserEntity> JobsuchendeBookmarks;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "user_bookmark_offeneStellen",
+			joinColumns = {
+					@JoinColumn(name = "userId", referencedColumnName = "id", nullable = false, updatable = false)},
+			inverseJoinColumns = {
+					@JoinColumn(name = "offeneStellenId", referencedColumnName = "id", nullable = false, updatable = false)})
+	private List<OffeneStellenEntity> OffenenStellenBookmarks;
 }
