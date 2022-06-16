@@ -5,6 +5,7 @@ import de.thb.jee.authexample.security.ExampleUserDetailsService;
 import de.thb.jee.authexample.service.AbschlussService;
 import de.thb.jee.authexample.service.KompetenzService;
 import de.thb.jee.authexample.service.OffeneStellenService;
+import de.thb.jee.authexample.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +25,7 @@ import java.util.List;
 public class ExampleController {
 
 	private final ExampleUserDetailsService exampleUserDetailsService;
+	private final UserService userService;
 	private final OffeneStellenService offeneStellenService;
 	private final KompetenzService kompetenzService;
 	private final AbschlussService abschlussService;
@@ -36,7 +38,7 @@ public class ExampleController {
 	@GetMapping("/secure")
 	public String securedPage(Model model) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity currentUser = exampleUserDetailsService.leadCurrentUser(((UserDetails) principal).getUsername());
+		UserEntity currentUser = userService.loadCurrentUser(((UserDetails) principal).getUsername());
 		if(currentUser.getRoleId() == 1){
 			List<OffeneStellenEntity> allOffeneStellenOfUser = offeneStellenService.getAllOffeneStellenOfUser(currentUser.getId());
 			model.addAttribute("offeneStellen", allOffeneStellenOfUser);
@@ -60,22 +62,20 @@ public class ExampleController {
 			if (!dataTransfer.getAbschluss().isBlank()) abschlussEntityId = (int) abschlussService.getByMatchingName(dataTransfer.getAbschluss()).getId();
 			int kompetenzenEntityId = 0;
 			if (!dataTransfer.getKompetenz().isBlank()) kompetenzenEntityId = (int) kompetenzService.getByMatchingName(dataTransfer.getKompetenz()).getId();
-			List<UserEntity> userEntities = exampleUserDetailsService.loadAllUsersMatchingSeachParameters("%" + dataTransfer.getBeschreibung() + "%", abschlussEntityId, kompetenzenEntityId);
+			List<UserEntity> userEntities = userService.loadAllUsersMatchingSeachParameters("%" + dataTransfer.getBeschreibung() + "%", abschlussEntityId, kompetenzenEntityId);
 			model.addAttribute("outputList", userEntities);
 		}else{
 			int kompetenzenEntityId = 0;
 			if (!dataTransfer.getKompetenz().isBlank()) kompetenzenEntityId = (int) kompetenzService.getByMatchingName(dataTransfer.getKompetenz()).getId();
 			List<OffeneStellenEntity> offeneStellenEntities = offeneStellenService.loadAllOffeneStellenMatchingSeachParameters((int) dataTransfer.getGehalt(), "%" + dataTransfer.getBeschreibung() + "%", kompetenzenEntityId);
 			model.addAttribute("outputList", offeneStellenEntities);
-			List<String> email = new ArrayList<>();
-			for (int i = 0 ; i < offeneStellenEntities.size(); i++){
-				String mail= exampleUserDetailsService.userId(offeneStellenEntities.get(i).getUserId()).getEmail();
-				if(!mail.isBlank()) {
-					email.add(mail);
-				}else email.add("");
+			List<String> emailList = new ArrayList<>();
+			for (OffeneStellenEntity offeneStellenEntity : offeneStellenEntities) {
+				String emailString = userService.userId(offeneStellenEntity.getUserId()).getEmail();
+				if (!emailString.isBlank()) emailList.add(emailString);
+				else emailList.add("");
 			}
-			model.addAttribute("emailList", email);
-
+			model.addAttribute("emailList", emailList);
 		}
 		model.addAttribute("dataTransfer", dataTransfer);
 		return "result";

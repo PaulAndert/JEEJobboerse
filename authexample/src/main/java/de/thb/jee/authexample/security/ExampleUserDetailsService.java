@@ -34,15 +34,4 @@ public class ExampleUserDetailsService implements UserDetailsService {
 						.build())
 				.orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
-
-	public UserEntity leadCurrentUser(String email) throws UsernameNotFoundException {
-		return userRepository.findUserEntitiesByEmail(email);
-	}
-
-	public List<UserEntity> loadAllUsersMatchingSeachParameters(String desc, int abschlussId, int kompetenzId){
-		return userRepository.search(desc, abschlussId, kompetenzId);
-	}
-	public UserEntity userId(long id) throws UsernameNotFoundException {
-		return userRepository.findById(id);
-	}
 }
