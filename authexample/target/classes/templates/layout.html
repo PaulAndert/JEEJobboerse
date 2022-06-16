@@ -2,18 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="UTF-8">
-<title> JobBörse</title>
-
-	<style> h1 { text-align: center; background:black; color: chocolate; font-size: 30px; }
-	</style>
-
-<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+<title>JobBörse </title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
 <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 </head>
-<body style = "background-image: url(https://famfoot.fr/wp-content/uploads/2019/05/sunset.jpg)">
+<body>
 	<div class="container">
 		<h1>Jobbörse</h1>
-
 		
 		<div sec:authorize="isAuthenticated()">
     		<span class="badge badge-dark" th:inline="text">Angemeldet als <span th:text="${#authentication.name}"></span></span>  

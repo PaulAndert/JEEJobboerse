@@ -3,9 +3,11 @@ package de.thb.jee.authexample.service;
 import de.thb.jee.authexample.entity.OffeneStellenEntity;
 import de.thb.jee.authexample.repository.OffeneStellenRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 @AllArgsConstructor
 public class OffeneStellenService {
 
