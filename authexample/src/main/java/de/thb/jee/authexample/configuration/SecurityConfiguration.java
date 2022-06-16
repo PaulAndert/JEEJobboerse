@@ -19,7 +19,7 @@ import de.thb.jee.authexample.security.ExampleUserDetailsService;
 @Configuration
 public class SecurityConfiguration {
 	
-	@Autowired
+	/*@Autowired
 	private UserRepository userRepository;
     @Bean
     public UserDetailsService userDetailsService() {
@@ -42,6 +42,7 @@ public class SecurityConfiguration {
     private AbschlussRepository abschlussRepository;
     @Bean
     public AbschlussService abschlussService() { return new AbschlussService(abschlussRepository); }
+    */
 
     @Bean
     public PasswordEncoder passwordEncoder() {

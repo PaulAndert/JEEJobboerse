@@ -10,7 +10,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import de.thb.jee.authexample.repository.UserRepository;
 import de.thb.jee.authexample.security.authority.UserAuthority;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
 @AllArgsConstructor
 public class ExampleUserDetailsService implements UserDetailsService {
 	
