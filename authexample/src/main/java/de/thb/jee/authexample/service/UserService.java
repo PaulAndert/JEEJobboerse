@@ -24,4 +24,7 @@ public class UserService {
     public UserEntity userId(long id) throws UsernameNotFoundException {
         return userRepository.findById(id);
     }
+    public List<UserEntity> loadAll(){
+        return userRepository.findAll();
+    }
 }

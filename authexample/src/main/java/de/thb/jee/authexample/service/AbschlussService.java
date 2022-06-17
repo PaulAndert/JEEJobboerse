@@ -16,4 +16,8 @@ public class AbschlussService {
     public List<AbschlussEntity> getAllAbschlüsse(){ return abschlussRepository.findAll(); }
 
     public AbschlussEntity getByMatchingName(String str){ return abschlussRepository.findAllByName(str); }
+
+    public AbschlussEntity getAbschlussById(long id){
+        return abschlussRepository.findById(id);
+    }
 }

@@ -30,6 +30,11 @@
                 <form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/result}" th:object="${bookmarkTransfer}"  method="post">
                     <p><input type="hidden" th:field="*{roleId}"/></p>
                     <p><input type="hidden" th:field="*{secondId}"/></p>
+                    <p><input type="hidden" class="form-control" name="beschreibung" th:value="${dataTransfer.getBeschreibung()}"/></p>
+                    <p><input type="hidden" class="form-control" name="abschluss" th:value="${dataTransfer.getAbschluss()}"/></p>
+                    <p><input type="hidden" class="form-control" name="kompetenz" th:value="${dataTransfer.getKompetenz()}"/></p>
+                    <p><input type="hidden" class="form-control" name="gehalt" th:value="${dataTransfer.getGehalt()}"/></p>
+                    <p><input type="hidden" class="form-control" name="roleid" th:value="${dataTransfer.getRoleId()}"/></p>
                     <div class="col-sm-3" style="margin:0 auto;">
                         <input class="btn btn-outline-dark" type="submit" value="Bookmark"/>
                     </div>
@@ -38,7 +43,7 @@
         </div>
 
         <div th:case="2">
-            <div th:each="output: ${outputList} "class="border border-dark rounded-3 p-2 m-2">
+            <div th:each="output: ${outputList}" class="border border-dark rounded-3 p-2 m-2">
                 <p th:text="${'Beschreibung: ' + output.getBeschreibung()}"></p>
                 <p th:text="${'Gehalt: ' + output.getGehalt() + '€ pro monat'}"></p>
                 <p th:text="${'Email: ' + emailList.get(outputList.indexOf(output))}"></p>
@@ -50,6 +55,11 @@
                 <form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/result}" th:object="${bookmarkTransfer}"  method="post">
                     <p><input type="hidden" th:field="*{roleId}"/></p>
                     <p><input type="hidden" th:field="*{secondId}"/></p>
+                    <p><input type="hidden" class="form-control" name="beschreibung" th:value="${dataTransfer.getBeschreibung()}"/></p>
+                    <p><input type="hidden" class="form-control" name="abschluss" th:value="${dataTransfer.getAbschluss()}"/></p>
+                    <p><input type="hidden" class="form-control" name="kompetenz" th:value="${dataTransfer.getKompetenz()}"/></p>
+                    <p><input type="hidden" class="form-control" name="gehalt" th:value="${dataTransfer.getGehalt()}"/></p>
+                    <p><input type="hidden" class="form-control" name="roleid" th:value="${dataTransfer.getRoleId()}"/></p>
                     <div class="col-sm-3" style="margin:0 auto;">
                         <input class="btn btn-outline-dark" type="submit" value="Bookmark"/>
                     </div>

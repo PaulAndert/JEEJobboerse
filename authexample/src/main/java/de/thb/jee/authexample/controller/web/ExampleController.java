@@ -10,10 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
@@ -30,9 +27,7 @@ public class ExampleController {
 	private final AbschlussService abschlussService;
 
 	@GetMapping("/")
-	public String showHomepage() {
-		return "home";
-	}
+	public String showHomepage() { return "home"; }
 
 	@GetMapping("/secure")
 	public String securedPage(Model model) {
@@ -48,9 +43,74 @@ public class ExampleController {
 				else emailList.add("");
 			}
 			model.addAttribute("emailList", emailList);
+			List<KompetenzenEntity> kompetenzen = kompetenzService.getAllKompetenzen();
+			model.addAttribute("kompetenzen", kompetenzen);
+			List<AbschlussEntity> abschluesse = abschlussService.getAllAbschlüsse();
+			model.addAttribute("abschluesse", abschluesse);
 		}
 		model.addAttribute("user", currentUser);
+		BookmarkTransferEntity bte = new BookmarkTransferEntity();
+		bte.setRoleId(currentUser.getRoleId());
+		model.addAttribute("bookmarkTransfer", bte);
 		return "secure";
+	}
+
+	@PostMapping("/secure")
+	public RedirectView deleteBookmark(@ModelAttribute BookmarkTransferEntity bookmarkTransfer){
+		UserEntity ue = userService.loadCurrentUser(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+		if(bookmarkTransfer.getRoleId() == 1) ue.getJobsuchendeBookmarks().remove(userService.userId(bookmarkTransfer.getSecondId()));
+		else ue.getOffenenStellenBookmarks().remove(offeneStellenService.getOffeneStelleById(bookmarkTransfer.getSecondId()));
+		return new RedirectView("/secure");
+	}
+
+	@RequestMapping(value = "offeneStellenDelete", method = RequestMethod.POST)
+	public RedirectView offeneStellenDelete(@RequestParam("secondid") int secondid){
+		offeneStellenService.deleteById(secondid);
+		return new RedirectView("/secure");
+	}
+
+	@RequestMapping(value = "removeAbschlussOderKompetenz", method = RequestMethod.POST)
+	public RedirectView removeAbschlussOderKompetenz(@RequestParam("secondid") int secondid, @RequestParam("mode") int mode){
+		UserEntity ue = userService.loadCurrentUser(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+		if(mode == 1){
+			ue.getUserAbschluesse().remove(abschlussService.getAbschlussById(secondid));
+		}else{
+			ue.getUserKompetenzen().remove(kompetenzService.getKompetenzById(secondid));
+		}
+		return new RedirectView("/secure");
+	}
+
+	@RequestMapping(value = "addAbschlussOderKompetenz", method = RequestMethod.POST)
+	public RedirectView addAbschlussOderKompetenz(@RequestParam("secondid") int secondid, @RequestParam("mode") int mode){
+		UserEntity ue = userService.loadCurrentUser(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+		if(mode == 1){
+			AbschlussEntity absch = abschlussService.getAbschlussById(secondid);
+			if(!ue.getUserAbschluesse().contains(absch)) ue.getUserAbschluesse().add(absch);
+		}else{
+			KompetenzenEntity komp = kompetenzService.getKompetenzById(secondid);
+			if(!ue.getUserKompetenzen().contains(komp)) ue.getUserKompetenzen().add(komp);
+		}
+		return new RedirectView("/secure");
+	}
+
+	@RequestMapping(value = "profilUpdate", method = RequestMethod.POST)
+	public String userUpdate(Model model){
+		UserEntity ue = userService.loadCurrentUser(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+		model.addAttribute("user", ue);
+		return "userUpdate";
+	}
+
+	@RequestMapping(value = "profilUpdate2", method = RequestMethod.POST)
+	public RedirectView userUpdate2(@ModelAttribute UserEntity ueupdated){
+		UserEntity ue = userService.loadCurrentUser(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+		ue.setEmail(ueupdated.getEmail());
+		ue.setVorname(ueupdated.getVorname());
+		ue.setNachname(ueupdated.getNachname());
+		ue.setAdresse(ueupdated.getAdresse());
+		ue.setUnternehmensname(ueupdated.getUnternehmensname());
+		ue.setUnternehmensregisternr(ueupdated.getUnternehmensregisternr());
+		ue.setBeschreibung(ueupdated.getBeschreibung());
+		return new RedirectView("/secure");
 	}
 
 	@GetMapping("/search")
@@ -90,36 +150,29 @@ public class ExampleController {
 		return "result";
 	}
 
-	@PostMapping("/result")
-	public RedirectView bookmark(@ModelAttribute BookmarkTransferEntity bookmarkTransfer){
+	@RequestMapping(value = "result", method = RequestMethod.POST)
+	public void bookmark(@ModelAttribute("bookmarkTransfer") BookmarkTransferEntity bookmarkTransfer,
+						 @RequestParam("beschreibung") String beschreibung,
+						 @RequestParam("abschluss") String abschluss,
+						 @RequestParam("kompetenz") String kompetenz,
+						 @RequestParam("gehalt") float gehalt,
+						 @RequestParam("roleid") int roleid,
+						 Model model){
 		UserEntity ue = userService.loadCurrentUser(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
-		if(bookmarkTransfer.getRoleId() == 1) ue.getJobsuchendeBookmarks().add(userService.userId(bookmarkTransfer.getSecondId()));
-		else ue.getOffenenStellenBookmarks().add(offeneStellenService.getOffeneStelleById(bookmarkTransfer.getSecondId()));
-		return new RedirectView("/secure");
+		if(bookmarkTransfer.getRoleId() == 1){
+			UserEntity uesecond = userService.userId(bookmarkTransfer.getSecondId());
+			if(!ue.getJobsuchendeBookmarks().contains(uesecond))ue.getJobsuchendeBookmarks().add(uesecond);
+		}else{
+			OffeneStellenEntity ossecond = offeneStellenService.getOffeneStelleById(bookmarkTransfer.getSecondId());
+			if(!ue.getOffenenStellenBookmarks().contains(ossecond))ue.getOffenenStellenBookmarks().add(ossecond);
+		}
+		DataTransferEntity dte = new DataTransferEntity(roleid, beschreibung, kompetenz, abschluss, gehalt);
+		showresult(dte, model);
 	}
+	/* // Getmapping für den Ofenen stellen erstellung
+	@GetMapping("createOffeneStelen")
+	public createOffeneStelen(){
 
-	/*
-	@PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Book create(@RequestBody Book book) {
-        return bookRepository.save(book);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        bookRepository.findById(id)
-          .orElseThrow(BookNotFoundException::new);
-        bookRepository.deleteById(id);
-    }
-
-    @PutMapping("/{id}")
-    public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
-        if (book.getId() != id) {
-          throw new BookIdMismatchException();
-        }
-        bookRepository.findById(id)
-          .orElseThrow(BookNotFoundException::new);
-        return bookRepository.save(book);
-    }
-	 */
+	}
+	*/
 }

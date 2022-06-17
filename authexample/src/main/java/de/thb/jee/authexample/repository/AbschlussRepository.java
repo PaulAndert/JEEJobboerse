@@ -10,4 +10,5 @@ import java.util.List;
 public interface AbschlussRepository extends CrudRepository<AbschlussEntity, Long> {
     List<AbschlussEntity> findAll();
     AbschlussEntity findAllByName(String str);
+    AbschlussEntity findById(long id);
 }

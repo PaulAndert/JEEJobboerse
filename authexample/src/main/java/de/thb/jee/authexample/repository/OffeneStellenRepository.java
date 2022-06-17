@@ -1,7 +1,6 @@
 package de.thb.jee.authexample.repository;
 
 import de.thb.jee.authexample.entity.OffeneStellenEntity;
-import de.thb.jee.authexample.service.OffeneStellenService;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.RepositoryDefinition;
@@ -27,4 +26,5 @@ public interface OffeneStellenRepository extends CrudRepository<OffeneStellenEnt
              @Param("kompetenzenid") int kompetenzenId);
 
     List<OffeneStellenEntity> findAll();
+    void deleteById(long id);
 }

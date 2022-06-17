@@ -24,4 +24,12 @@ public class OffeneStellenService {
     public List<OffeneStellenEntity> loadAllOffeneStellenMatchingSeachParameters(int gehalt, String desc, int KompetenzenId){
         return offeneStellenRepository.search(gehalt, desc, KompetenzenId);
     }
+
+    public List<OffeneStellenEntity> loadAll(){
+        return offeneStellenRepository.findAll();
+    }
+
+    public void deleteById(long id){
+        offeneStellenRepository.deleteById(id);
+    }
  }

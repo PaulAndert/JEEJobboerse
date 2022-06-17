@@ -3,6 +3,7 @@ package de.thb.jee.authexample.service;
 import de.thb.jee.authexample.entity.KompetenzenEntity;
 import de.thb.jee.authexample.repository.KompetenzenRepository;
 import lombok.AllArgsConstructor;
+import org.hibernate.dialect.LobMergeStrategy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,4 +19,8 @@ public class KompetenzService {
     }
 
     public KompetenzenEntity getByMatchingName(String str){ return kompetenzenRepository.findAllByName(str); }
+
+    public KompetenzenEntity getKompetenzById(long id){
+        return kompetenzenRepository.findById(id);
+    }
 }

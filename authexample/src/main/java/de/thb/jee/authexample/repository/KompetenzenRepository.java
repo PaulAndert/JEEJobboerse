@@ -10,4 +10,5 @@ import java.util.List;
 public interface KompetenzenRepository extends CrudRepository<KompetenzenEntity, Long> {
     List<KompetenzenEntity> findAll();
     KompetenzenEntity findAllByName(String str);
+    KompetenzenEntity findById(long id);
 }
