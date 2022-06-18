@@ -24,6 +24,8 @@ public class OffeneStellenEntity {
 
     private String beschreibung;
 
+    private boolean enabled;
+
     private long gehalt;
 
     private long userId;

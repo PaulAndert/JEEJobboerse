@@ -27,19 +27,21 @@
 				</form>
 
 				<h5>Meine aktuell angebotenen Stellenangebote:</h5>
-				<div th:each="offen: ${offeneStellen}" class="border border-dark rounded-3 p-2 m-2">
-					<p th:text="${'Beschreibung: ' + offen.getBeschreibung()}"></p>
-					<p th:text="${'Gehalt: ' + offen.getGehalt()}"></p>
-					<span>Kompetenzen: </span>
-					<ul th:each=" kompetenz: ${offen.getOffeneStelleKompetenzen()}">
-						<li th:text="${kompetenz.getBeschreibung()}"></li>
-					</ul>
-					<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/offeneStellenDelete}" method="post">
-						<p><input type="hidden" class="form-control" name="secondid" th:value="${offen.getId()}"/></p>
-						<div class="col-sm-3" style="margin:0 auto;">
-							<input class="btn btn-outline-dark" type="submit" value="Löschen"/>
-						</div>
-					</form>
+				<div th:each="offen: ${offeneStellen}">
+					<div th:if="${offen.isEnabled()}" class="border border-dark rounded-3 p-2 m-2">
+						<p th:text="${'Beschreibung: ' + offen.getBeschreibung()}"></p>
+						<p th:text="${'Gehalt: ' + offen.getGehalt()}"></p>
+						<span>Kompetenzen: </span>
+						<ul th:each=" kompetenz: ${offen.getOffeneStelleKompetenzen()}">
+							<li th:text="${kompetenz.getBeschreibung()}"></li>
+						</ul>
+						<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/offeneStellenDelete}" method="post">
+							<p><input type="hidden" class="form-control" name="secondid" th:value="${offen.getId()}"/></p>
+							<div class="col-sm-3" style="margin:0 auto;">
+								<input class="btn btn-outline-dark" type="submit" value="Löschen"/>
+							</div>
+						</form>
+					</div>
 				</div>
 
 				<h5>Bookmarks: </h5>

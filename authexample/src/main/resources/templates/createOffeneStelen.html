@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JobBörse </title>
+</head>
+<body>
+<div layout:fragment="content">
+
+  <form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/addKompetenzToOS}" th:object="${DataTransfer}" method="post">
+    <select name="kompetenzid" class="form-select m-4">
+      <option value="" selected>Wähle eine Kompetenz aus:</option>
+      <option th:each="kompetenz: ${kompetenzen}" th:value="${kompetenz.getId()}" th:text="${kompetenz.getName()}">
+      </option>
+    </select>
+    <p><input type="hidden" class="form-control" name="id" th:value="${DataTransfer.getId()}" th:field="*{id}"/></p>
+    <p th:text="${DataTransfer.getId()}"></p>
+    <div class="col-sm-3" style="margin:0 auto;">
+      <input class="btn btn-outline-dark" type="submit" value="Add"/>
+    </div>
+  </form>
+
+  <form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/createOffeneStellen}" th:object="${DataTransfer}" method="post">
+    <h5>Meine Daten:</h5>
+    <span>Beschreibung:</span>
+    <p><input type="text" th:value="${DataTransfer.getBeschreibung()}" th:field="*{beschreibung}"/></p>
+    <span>Gehalt:</span>
+    <p><input type="text" th:value="${DataTransfer.getGehalt()}" th:field="*{gehalt}"/></p>
+    <p><input type="hidden" class="form-control" name="id" th:value="${DataTransfer.getId()}" th:field="*{id}"/></p>
+    <ul th:each="kompetenz: ${DataTransfer.getOffeneStelleKompetenzen()}">
+      <li th:text="${kompetenz.getName()}"></li>
+    </ul>
+
+    <div class="col-sm-3" style="margin:0 auto;">
+      <input class="btn btn-outline-dark" type="submit" value="Create"/>
+    </div>
+  </form>
+
+
+</div>
+</body>
+</html>

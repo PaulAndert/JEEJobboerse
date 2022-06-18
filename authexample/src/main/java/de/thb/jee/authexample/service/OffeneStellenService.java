@@ -32,4 +32,8 @@ public class OffeneStellenService {
     public void deleteById(long id){
         offeneStellenRepository.deleteById(id);
     }
+
+    public void insert(OffeneStellenEntity ofe){
+        offeneStellenRepository.save(ofe);
+    }
  }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -31,6 +32,7 @@ public class ExampleController {
 
 	@GetMapping("/secure")
 	public String securedPage(Model model) {
+
 		UserEntity currentUser = userService.loadCurrentUser(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
 		if(currentUser.getRoleId() == 1){
 			List<OffeneStellenEntity> allOffeneStellenOfUser = offeneStellenService.getAllOffeneStellenOfUser(currentUser.getId());
@@ -169,10 +171,47 @@ public class ExampleController {
 		DataTransferEntity dte = new DataTransferEntity(roleid, beschreibung, kompetenz, abschluss, gehalt);
 		showresult(dte, model);
 	}
-	/* // Getmapping für den Ofenen stellen erstellung
-	@GetMapping("createOffeneStelen")
-	public createOffeneStelen(){
 
+	@GetMapping("createOffeneStellen")
+	public String createOffeneStellen(Model model){
+		OffeneStellenEntity newOffStelle = new OffeneStellenEntity();
+		newOffStelle.setOffeneStelleKompetenzen(new ArrayList<>());
+		newOffStelle.setUserId(userService.loadCurrentUser(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername()).getId());
+		offeneStellenService.insert(newOffStelle);
+		System.out.println("NEWOFFENESTELLEID: " + newOffStelle.getId());
+		model.addAttribute("DataTransfer", newOffStelle);
+		model.addAttribute("kompetenzen", kompetenzService.getAllKompetenzen());
+		return "createOffeneStelen";
 	}
-	*/
+
+	@PostMapping("addKompetenzToOS")
+	public String addKompetenzToOS(@ModelAttribute("DataTransfer") OffeneStellenEntity ofe,
+								   @RequestParam("kompetenzid") long kompetenzid,
+								   @RequestParam("id") long id,
+								   Model model){
+		KompetenzenEntity aktuelleKompetenz = kompetenzService.getKompetenzById(kompetenzid);
+		OffeneStellenEntity ofe2 = offeneStellenService.getOffeneStelleById(id);
+		if (ofe2.getOffeneStelleKompetenzen() != null) if(!ofe2.getOffeneStelleKompetenzen().contains(aktuelleKompetenz)) ofe2.getOffeneStelleKompetenzen().add(aktuelleKompetenz);
+
+		model.addAttribute("DataTransfer", ofe2);
+		model.addAttribute("kompetenzen", kompetenzService.getAllKompetenzen());
+		return "createOffeneStelen";
+	}
+
+	@PostMapping("createOffeneStellen")
+	public RedirectView createOffeneStellen2(@ModelAttribute("offeneStelle") OffeneStellenEntity offeneStellenEntity,
+											 @RequestParam("id") long id,
+											 Model model){
+		System.out.println(id);
+		System.out.println(offeneStellenEntity.getBeschreibung());
+		System.out.println(offeneStellenEntity.getGehalt());
+
+		OffeneStellenEntity old = offeneStellenService.getOffeneStelleById(id);
+		System.out.println(old.getId());
+		old.setGehalt(offeneStellenEntity.getGehalt());
+		old.setBeschreibung(offeneStellenEntity.getBeschreibung());
+		old.setEnabled(true);
+		return new RedirectView("/secure");
+	}
+
 }
