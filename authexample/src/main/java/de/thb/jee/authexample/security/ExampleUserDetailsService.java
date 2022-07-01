@@ -15,13 +15,13 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class ExampleUserDetailsService implements UserDetailsService {
-	
-    private final UserRepository userRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	private final UserRepository userRepository;
 
-		return userRepository.findByEmail(username)
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+		return userRepository.findOptionalByEmail(username)
 				.map(user -> ExampleUserDetails.builder()
 						.username(user.getEmail())
 						.password(user.getPassword())
@@ -33,5 +33,6 @@ public class ExampleUserDetailsService implements UserDetailsService {
 						.credentialsNonExpired(true)
 						.build())
 				.orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-    }
+	}
 }
+

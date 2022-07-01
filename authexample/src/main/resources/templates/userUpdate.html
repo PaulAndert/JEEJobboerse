@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
@@ -8,49 +7,51 @@
     <title>JobBörse</title>
 </head>
 <body>
-    <div layout:fragment="content">
-        <div th:switch="${#authentication.getPrincipal().getRoleId()}">
-            <div th:case="1">
+<div layout:fragment="content">
+    <div th:switch="${#authentication.getPrincipal().getRoleId()}">
+        <div th:case="1">
 
-                <form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/profilUpdate2}" th:object="${user}" method="post">
-                    <h5>Meine Daten:</h5>
-                    <span>Name:</span>
-                    <p><input type="text" th:value="${user.getUnternehmensname()}" th:field="*{Unternehmensname}"/></p>
-                    <span>Unternehmensregisternr:</span>
-                    <p><input type="text" th:value="${user.getUnternehmensregisternr()}" th:field="*{Unternehmensregisternr}"/></p>
-                    <span>Adresse:</span>
-                    <p><input type="text" th:value="${user.getAdresse()}" th:field="*{Adresse}"/></p>
-                    <span>Email:</span>
-                    <p><input type="text" th:value="${user.getEmail()}" th:field="*{Email}"/></p>
-                    <span>Beschreibung:</span>
-                    <p><input type="text" th:value="${user.getBeschreibung()}" th:field="*{Beschreibung}"/></p>
-                    <div class="col-sm-3" style="margin:0 auto;">
-                        <input class="btn btn-outline-dark" type="submit" value="Update"/>
-                    </div>
-                </form>
+            <form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/userUpdate}" th:object="${user}"
+                  method="post">
+                <h5>Meine Daten:</h5>
+                <span>Name:</span>
+                <p><input type="text" th:value="${user.getUnternehmensname()}" maxlength="255" th:field="*{Unternehmensname}"/></p>
+                <span>Unternehmensregisternr:</span>
+                <p><input type="text" th:value="${user.getUnternehmensregisternr()}" maxlength="255" th:field="*{Unternehmensregisternr}"/></p>
+                <span>Adresse:</span>
+                <p><input type="text" th:value="${user.getAdresse()}" maxlength="255" th:field="*{Adresse}"/></p>
+                <span>Email:</span>
+                <p><input type="text" th:value="${user.getEmail()}" maxlength="255" th:field="*{Email}"/></p>
+                <span>Beschreibung:</span>
+                <p><input type="text" th:value="${user.getBeschreibung()}" maxlength="255" th:field="*{Beschreibung}"/></p>
+                <div class="col-sm-3" style="margin:0 auto;">
+                    <input class="btn btn-outline-dark" type="submit" value="Update"/>
+                </div>
+            </form>
 
-            </div>
-            <div th:case="2" th:with="Role=${#authentication.getPrincipal().getRoleId()}">
-
-                <form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/profilUpdate2}" th:object="${user}" method="post">
-                    <h5>Meine Daten:</h5>
-                    <span>Vorname:</span>
-                    <p><input type="text" th:value="${user.getVorname()}" th:field="*{Vorname}"/></p>
-                    <span>Nachname:</span>
-                    <p><input type="text" th:value="${user.getNachname()}" th:field="*{Nachname}"/></p>
-                    <span>Adresse:</span>
-                    <p><input type="text" th:value="${user.getAdresse()}" th:field="*{Adresse}"/></p>
-                    <span>Email:</span>
-                    <p><input type="text" th:value="${user.getEmail()}" th:field="*{Email}"/></p>
-                    <span>Beschreibung:</span>
-                    <p><input type="text" th:value="${user.getBeschreibung()}" th:field="*{Beschreibung}"/></p>
-                    <div class="col-sm-3" style="margin:0 auto;">
-                        <input class="btn btn-outline-dark" type="submit" value="Update"/>
-                    </div>
-                </form>
-            </div>
         </div>
+        <div th:case="2" th:with="Role=${#authentication.getPrincipal().getRoleId()}">
 
+            <form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/userUpdate}" th:object="${user}"
+                  method="post">
+                <h5>Meine Daten:</h5>
+                <span>Vorname:</span>
+                <p><input type="text" th:value="${user.getVorname()}" maxlength="255" th:field="*{Vorname}"/></p>
+                <span>Nachname:</span>
+                <p><input type="text" th:value="${user.getNachname()}" maxlength="255" th:field="*{Nachname}"/></p>
+                <span>Adresse:</span>
+                <p><input type="text" th:value="${user.getAdresse()}" maxlength="255" th:field="*{Adresse}"/></p>
+                <span>Email:</span>
+                <p><input type="text" th:value="${user.getEmail()}" maxlength="255" th:field="*{Email}"/></p>
+                <span>Beschreibung:</span>
+                <p><input type="text" th:value="${user.getBeschreibung()}" maxlength="255" th:field="*{Beschreibung}"/></p>
+                <div class="col-sm-3" style="margin:0 auto;">
+                    <input class="btn btn-outline-dark" type="submit" value="Update"/>
+                </div>
+            </form>
+        </div>
     </div>
+
+</div>
 </body>
 </html>

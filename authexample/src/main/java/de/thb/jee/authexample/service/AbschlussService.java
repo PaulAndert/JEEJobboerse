@@ -13,11 +13,11 @@ public class AbschlussService {
 
     private final AbschlussRepository abschlussRepository;
 
-    public List<AbschlussEntity> getAllAbschlüsse(){ return abschlussRepository.findAll(); }
+    public List<AbschlussEntity> loadAll(){ return abschlussRepository.findAll(); }
 
-    public AbschlussEntity getByMatchingName(String str){ return abschlussRepository.findAllByName(str); }
+    public AbschlussEntity loadByName(String str){ return abschlussRepository.findByName(str); }
 
-    public AbschlussEntity getAbschlussById(long id){
+    public AbschlussEntity loadById(long id){
         return abschlussRepository.findById(id);
     }
 }

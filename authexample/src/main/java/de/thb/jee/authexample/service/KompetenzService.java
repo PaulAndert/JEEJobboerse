@@ -14,13 +14,13 @@ public class KompetenzService {
 
     private final KompetenzenRepository kompetenzenRepository;
 
-    public List<KompetenzenEntity> getAllKompetenzen(){
+    public List<KompetenzenEntity> loadAll(){
         return kompetenzenRepository.findAll();
     }
 
-    public KompetenzenEntity getByMatchingName(String str){ return kompetenzenRepository.findAllByName(str); }
+    public KompetenzenEntity loadByName(String str){ return kompetenzenRepository.findByName(str); }
 
-    public KompetenzenEntity getKompetenzById(long id){
+    public KompetenzenEntity loadById(long id){
         return kompetenzenRepository.findById(id);
     }
 }

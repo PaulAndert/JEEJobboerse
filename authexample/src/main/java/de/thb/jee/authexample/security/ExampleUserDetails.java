@@ -23,19 +23,16 @@ public class ExampleUserDetails implements UserDetails {
 	private boolean accountNonLocked;
 	private boolean credentialsNonExpired;
 	private boolean enabled;
-
 	private int roleId;
 
 	private final Collection<? extends GrantedAuthority> authorities;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-
 		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
 		if (roleId == 1) authorities.add(new SimpleGrantedAuthority("ROLE_FIRMA"));
 		if (roleId == 2) authorities.add(new SimpleGrantedAuthority("ROLE_JOBSUCHENDER"));
-
 		return authorities;
 	}
 }
+

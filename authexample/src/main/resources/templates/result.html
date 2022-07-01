@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
@@ -10,6 +9,15 @@
 </head>
 <body>
 <div layout:fragment="content">
+
+    <p>Das ist ein test</p>
+
+    <p th:text="${outputList.isEmpty()}"></p>
+    <p th:text="${dataTransfer.getRoleId()}"></p>
+    <div th:if="${outputList.isEmpty()}" th:switch="${dataTransfer.getRoleId()}">
+        <div th:case="1" class="align-content-center"><p>Zu den ausgewählten Suchparametern gibt es keine passenden Jobsuchenden</p></div>
+        <div th:case="2" class="align-content-center"><p>Zu den ausgewählten Suchparametern gibt es keine passenden offene Stellen</p></div>
+    </div>
 
     <div th:switch="${dataTransfer.getRoleId()}">
 

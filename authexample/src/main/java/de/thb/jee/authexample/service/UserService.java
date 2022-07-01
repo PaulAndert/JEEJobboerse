@@ -14,17 +14,9 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserEntity loadCurrentUser(String email) throws UsernameNotFoundException {
-        return userRepository.findUserEntitiesByEmail(email);
-    }
+    public UserEntity loadByEmail(String email) throws UsernameNotFoundException { return userRepository.findByEmail(email); }
 
-    public List<UserEntity> loadAllUsersMatchingSeachParameters(String desc, int abschlussId, int kompetenzId){
-        return userRepository.search(desc, abschlussId, kompetenzId);
-    }
-    public UserEntity userId(long id) throws UsernameNotFoundException {
-        return userRepository.findById(id);
-    }
-    public List<UserEntity> loadAll(){
-        return userRepository.findAll();
-    }
+    public UserEntity loadById(long id) throws UsernameNotFoundException { return userRepository.findById(id); }
+
+    public List<UserEntity> loadSearchResults(String desc, int abschlussId, int kompetenzId) { return userRepository.search(desc, abschlussId, kompetenzId); }
 }

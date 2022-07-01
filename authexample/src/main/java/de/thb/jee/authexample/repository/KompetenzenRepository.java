@@ -9,6 +9,6 @@ import java.util.List;
 @RepositoryDefinition(domainClass = KompetenzenEntity.class, idClass = Long.class)
 public interface KompetenzenRepository extends CrudRepository<KompetenzenEntity, Long> {
     List<KompetenzenEntity> findAll();
-    KompetenzenEntity findAllByName(String str);
+    KompetenzenEntity findByName(String str);
     KompetenzenEntity findById(long id);
 }

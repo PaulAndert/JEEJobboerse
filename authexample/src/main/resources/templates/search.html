@@ -8,67 +8,64 @@
     <title>JobBörse </title>
 </head>
 <body>
-    <div layout:fragment="content">
-        <div th:switch="${#authentication.getPrincipal().getRoleId()}">
-            <div th:case="1" th:with="Role=${#authentication.getPrincipal().getRoleId()}">
+<div layout:fragment="content">
+    <div th:switch="${#authentication.getPrincipal().getRoleId()}">
+        <div th:case="1" th:with="Role=${#authentication.getPrincipal().getRoleId()}">
 
-                <form th:object="${dataTransfer.setRoleId(Role)}"></form>
-                <h4 style="text-align: center">Nach Jobsuchenden suchen</h4>
-                <form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/search}" th:object="${dataTransfer}" method="post">
+            <form th:object="${dataTransfer.setRoleId(Role)}"></form>
+            <h4 style="text-align: center">Nach Jobsuchenden suchen</h4>
+            <form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/search}" th:object="${dataTransfer}" method="post">
 
-                    <div class="input-group flex-nowrap m-4">
-                        <span class="input-group-text" id="addon-wrapping">In Beschreibung suchen</span>
-                        <input type="text" th:field="*{beschreibung}" class="form-control" placeholder="..." aria-describedby="addon-wrapping">
-                    </div>
+                <div class="input-group flex-nowrap m-4">
+                    <span class="input-group-text" id="addon-wrapping">In Beschreibung suchen</span>
+                    <input type="text" th:field="*{beschreibung}" class="form-control" placeholder="..." aria-describedby="addon-wrapping">
+                </div>
 
-                    <select th:field="*{kompetenz}" class="form-select m-4">
-                        <option value="" selected>Wähle eine Kompetenz aus:</option>
-                        <option th:each="kompetenz: ${kompetenzen}" th:value="${kompetenz.getName()}" th:text="${kompetenz.getName()}">
-                        </option>
-                    </select>
+                <select th:field="*{kompetenz}" class="form-select m-4">
+                    <option value="" selected>Wähle eine Kompetenz aus:</option>
+                    <option th:each="kompetenz: ${kompetenzen}" th:value="${kompetenz.getName()}" th:text="${kompetenz.getName()}"></option>
+                </select>
 
-                    <select th:field="*{abschluss}" class="form-select m-4">
-                        <option value="" selected>Wähle einen Abschluss aus:</option>
-                        <option th:each="abschluss: ${abschluesse}" th:value="${abschluss.getName()}" th:text="${abschluss.getName()}">
-                        </option>
-                    </select>
+                <select th:field="*{abschluss}" class="form-select m-4">
+                    <option value="" selected>Wähle einen Abschluss aus:</option>
+                    <option th:each="abschluss: ${abschluesse}" th:value="${abschluss.getName()}" th:text="${abschluss.getName()}"></option>
+                </select>
 
-                    <p><input type="hidden" th:field="*{roleId}"/></p>
-                    <div class="col-sm-3" style="margin:0 auto;">
-                        <input class="btn btn-outline-dark" type="submit" value="Suchen"/>
-                    </div>
-                </form>
+                <p><input type="hidden" th:field="*{roleId}"/></p>
+                <div class="col-sm-3" style="margin:0 auto;">
+                    <input class="btn btn-outline-dark" type="submit" value="Suchen"/>
+                </div>
+            </form>
 
-            </div>
-            <div th:case="2" th:with="Role=${#authentication.getPrincipal().getRoleId()}">
+        </div>
+        <div th:case="2" th:with="Role=${#authentication.getPrincipal().getRoleId()}">
 
-                <form th:object="${dataTransfer.setRoleId(Role)}"></form>
-                <h4 style="text-align: center">Nach Offenen Stellen suchen</h4>
-                <form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/search}" th:object="${dataTransfer}"  method="post">
+            <form th:object="${dataTransfer.setRoleId(Role)}"></form>
+            <h4 style="text-align: center">Nach Offenen Stellen suchen</h4>
+            <form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/search}" th:object="${dataTransfer}" method="post">
 
-                    <div class="input-group flex-nowrap m-4">
-                        <span class="input-group-text">In Beschreibung suchen</span>
-                        <input type="text" th:field="*{beschreibung}" class="form-control" placeholder="..." aria-describedby="addon-wrapping">
-                    </div>
+                <div class="input-group flex-nowrap m-4">
+                    <span class="input-group-text">In Beschreibung suchen</span>
+                    <input type="text" th:field="*{beschreibung}" class="form-control" placeholder="..." aria-describedby="addon-wrapping">
+                </div>
 
-                    <select th:field="*{kompetenz}" class="form-select m-4">
-                        <option value="" selected>Wähle eine Kompetenz aus:</option>
-                        <option th:each="kompetenz: ${kompetenzen}" th:value="${kompetenz.getName()}" th:text="${kompetenz.getName()}">
-                        </option>
-                    </select>
+                <select th:field="*{kompetenz}" class="form-select m-4">
+                    <option value="" selected>Wähle eine Kompetenz aus:</option>
+                    <option th:each="kompetenz: ${kompetenzen}" th:value="${kompetenz.getName()}" th:text="${kompetenz.getName()}"></option>
+                </select>
 
-                    <div class="input-group flex-nowrap m-4">
-                        <span class="input-group-text">Gib ein mindestgehalt ein</span>
-                        <input type="text" th:field="*{gehalt}" class="form-control" aria-describedby="addon-wrapping">
-                    </div>
+                <div class="input-group flex-nowrap m-4">
+                    <span class="input-group-text">Gib ein mindestgehalt ein</span>
+                    <input type="text" th:field="*{gehalt}" class="form-control" aria-describedby="addon-wrapping">
+                </div>
 
-                    <p><input type="hidden" th:field="*{roleId}"/></p>
-                    <div class="col-sm-3" style="margin:0 auto;">
-                        <input class="btn btn-outline-dark" type="submit" value="Suchen"/>
-                    </div>
-                </form>
-            </div>
+                <p><input type="hidden" th:field="*{roleId}"/></p>
+                <div class="col-sm-3" style="margin:0 auto;">
+                    <input class="btn btn-outline-dark" type="submit" value="Suchen"/>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 </body>
 </html>

@@ -9,6 +9,6 @@ import java.util.List;
 @RepositoryDefinition(domainClass = AbschlussEntity.class, idClass = Long.class)
 public interface AbschlussRepository extends CrudRepository<AbschlussEntity, Long> {
     List<AbschlussEntity> findAll();
-    AbschlussEntity findAllByName(String str);
+    AbschlussEntity findByName(String str);
     AbschlussEntity findById(long id);
 }
