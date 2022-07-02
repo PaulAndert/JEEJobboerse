@@ -32,6 +32,7 @@ public class ExampleController {
 
 	@GetMapping("/secure")
 	public String securedPage(Model model) {
+		//System.out.println("Test");
 		UserEntity currentUser = getCurrentUser();
 		if(currentUser.getRoleId() == 1) model.addAttribute("offeneStellen", offeneStellenService.loadAllByUserId(currentUser.getId()));
 		else{

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
 	  layout:decorate="~{layout}">
 <head>
 	<meta charset="UTF-8">
@@ -8,143 +7,160 @@
 	<title>JobBörse </title>
 </head>
 <body>
-	<div layout:fragment="content">
-		<div th:switch="${user.getRoleId()}">
-			<div th:case="1">
-				<h5>Meine Daten:</h5>
-				<p th:text="${'Name: ' + user.getUnternehmensname() + ' (Nr. ' + user.getUnternehmensregisternr() + ')'}"></p>
+<div layout:fragment="content">
 
-				<p th:text="${'Adresse: ' + user.getAdresse()}" ></p>
-				<p th:text="${'Email: ' + user.getEmail()}" ></p>
+	<div th:switch="${user.getRoleId()}">
+		<div th:case="1">
+			<h5>Meine Daten:</h5>
+			<p th:text="${'Name: ' + user.getUnternehmensname() + ' (Nr. ' + user.getUnternehmensregisternr() + ')'}"></p>
 
-				<h5>Meine Beschreibung:</h5>
-				<p th:text="${user.getBeschreibung()}"></p>
+			<p th:text="${'Adresse: ' + user.getAdresse()}"></p>
+			<p th:text="${'Email: ' + user.getEmail()}"></p>
 
-				<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/profilUpdate}" th:object="${user}"  method="post">
-					<div class="col-sm-3" style="margin:0 auto;">
-						<input class="btn btn-outline-dark" type="submit" value="Update"/>
-					</div>
-				</form>
+			<h5>Meine Beschreibung:</h5>
+			<p th:text="${user.getBeschreibung()}"></p>
 
-				<h5>Meine aktuell angebotenen Stellenangebote:</h5>
-				<div th:each="offen: ${offeneStellen}" >
-					<div th:if="${offen.isEnabled()}" class="border border-dark rounded-3 p-2 m-2">
-						<p th:text="${'Beschreibung: ' + offen.getBeschreibung()}"></p>
-						<p th:text="${'Gehalt: ' + offen.getGehalt()}"></p>
-						<span>Kompetenzen: </span>
-						<ul th:each=" kompetenz: ${offen.getOffeneStelleKompetenzen()}">
-							<li th:text="${kompetenz.getBeschreibung()}"></li>
-						</ul>
-						<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/offeneStellenDelete}" method="post">
-							<p><input type="hidden" class="form-control" name="secondid" th:value="${offen.getId()}"/></p>
-							<div class="col-sm-3" style="margin:0 auto;">
-								<input class="btn btn-outline-dark" type="submit" value="Löschen"/>
-							</div>
-						</form>
-					</div>
+			<form action="#" class="col-sm-1" style="margin:0 auto;" th:action="@{/prepareUserUpdate}"
+				  th:object="${user}" method="post">
+				<div style="margin:0 auto;">
+					<input class="btn btn-outline-dark" type="submit" value="Update Profil"/>
 				</div>
+			</form>
 
-				<h5>Bookmarks: </h5>
-				<div th:each="bookmark: ${user.getJobsuchendeBookmarks()}" class="border border-dark rounded-3 p-2 m-2">
-					<p th:text="${'Name: ' + bookmark.getVorname()} + ' ' + ${bookmark.getNachname()}"></p>
-					<p th:text="${'Adresse: ' + bookmark.getAdresse()}"></p>
-					<p th:text="${'Email: ' + bookmark.getEmail()}"></p>
-
-					<h5>Meine Beschreibung:</h5>
-					<p th:text="${bookmark.getBeschreibung()}"></p>
-
-					<h5>Meine Abschlüsse:</h5>
-					<ul th:each="ab: ${bookmark.getUserAbschluesse()}">
-						<li th:text="${ab.getName()}"></li>
+			<h5>Meine aktuell angebotenen Stellenangebote:</h5>
+			<div th:each="offen: ${offeneStellen}">
+				<div th:if="${offen.isEnabled()}" class="border border-dark rounded-3 p-2 m-2">
+					<p th:text="${'Beschreibung: ' + offen.getBeschreibung()}"></p>
+					<p th:text="${'Gehalt: ' + offen.getGehalt()}"></p>
+					<span>Kompetenzen: </span>
+					<ul th:each=" kompetenz: ${offen.getOffeneStelleKompetenzen()}">
+						<li th:text="${kompetenz.getBeschreibung()}"></li>
 					</ul>
-
-					<h5>Meine Kompetenzen:</h5>
-					<ul th:each="uk: ${bookmark.getUserKompetenzen()}">
-						<li th:text="${uk.getName()}"></li>
-					</ul>
-					<form th:object="${bookmarkTransfer.setSecondId(bookmark.getId())}"></form>
-					<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/secure}" th:object="${bookmarkTransfer}"  method="post">
-						<p><input type="hidden" th:field="*{roleId}"/></p>
-						<p><input type="hidden" th:field="*{secondId}"/></p>
+					<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/offeneStellenDelete}"
+						  method="post">
+						<p><input type="hidden" class="form-control" name="secondid" th:value="${offen.getId()}"/></p>
 						<div class="col-sm-3" style="margin:0 auto;">
 							<input class="btn btn-outline-dark" type="submit" value="Löschen"/>
 						</div>
 					</form>
 				</div>
 			</div>
-			<div th:case="2">
-				<h5>Meine Daten:</h5>
-				<p th:text="${'Name: ' + user.getVorname()} + ' ' + ${user.getNachname()}"></p>
-				<p th:text="${'Adresse: ' + user.getAdresse()}"></p>
-				<p th:text="${'Email: ' + user.getEmail()}"></p>
+
+			<h5>Bookmarks: </h5>
+			<div th:each="bookmark: ${user.getJobsuchendeBookmarks()}" class="border border-dark rounded-3 p-2 m-2">
+				<p th:text="${'Name: ' + bookmark.getVorname()} + ' ' + ${bookmark.getNachname()}"></p>
+				<p th:text="${'Adresse: ' + bookmark.getAdresse()}"></p>
+				<p th:text="${'Email: ' + bookmark.getEmail()}"></p>
 
 				<h5>Meine Beschreibung:</h5>
-				<p th:text="${user.getBeschreibung()}"></p>
+				<p th:text="${bookmark.getBeschreibung()}"></p>
 
 				<h5>Meine Abschlüsse:</h5>
-				<ul th:each="ab: ${user.getUserAbschluesse()}">
+				<ul th:each="ab: ${bookmark.getUserAbschluesse()}">
 					<li th:text="${ab.getName()}"></li>
-					<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/removeAbschlussOderKompetenz}" method="post">
-						<p><input type="hidden" class="form-control" name="secondid" th:value="${ab.getId()}"/></p>
-						<p><input type="hidden" class="form-control" name="mode" value="1"/></p>
-						<div class="col-sm-3" style="margin:0 auto;">
-							<input class="btn btn-outline-dark" type="submit" value="Löschen"/>
-						</div>
-					</form>
 				</ul>
-				<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/addAbschlussOderKompetenz}" method="post">
-					<select name="secondid" class="form-select m-4">
-						<option value="" selected>Wähle einen Abschluss aus:</option>
-						<option th:each="abschluss: ${abschluesse}" th:value="${abschluss.getId()}" th:text="${abschluss.getName()}">
-						</option>
-					</select>
+
+				<h5>Meine Kompetenzen:</h5>
+				<ul th:each="uk: ${bookmark.getUserKompetenzen()}">
+					<li th:text="${uk.getName()}"></li>
+				</ul>
+				<form th:object="${bookmarkTransfer.setSecondId(bookmark.getId())}"></form>
+				<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/secure}" th:object="${bookmarkTransfer}" method="post">
+					<p><input type="hidden" th:field="*{roleId}"/></p>
+					<p><input type="hidden" th:field="*{secondId}"/></p>
+					<div class="col-sm-3" style="margin:0 auto;">
+						<input class="btn btn-outline-dark" type="submit" value="Löschen"/>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div th:case="2">
+			<h5>Meine Daten:</h5>
+			<p th:text="${'Name: ' + user.getVorname()} + ' ' + ${user.getNachname()}"></p>
+			<p th:text="${'Adresse: ' + user.getAdresse()}"></p>
+			<p th:text="${'Email: ' + user.getEmail()}"></p>
+
+			<h5>Meine Beschreibung:</h5>
+			<p th:text="${user.getBeschreibung()}"></p>
+
+			<form action="#" class="col-sm-1" style="margin:0 auto;" th:action="@{/prepareUserUpdate}"
+				  th:object="${user}" method="post">
+				<div style="margin:0 auto;">
+					<input class="btn btn-outline-dark" type="submit" value="Update Profil"/>
+				</div>
+			</form>
+
+			<h5>Meine Abschlüsse:</h5>
+			<ul th:each="ab: ${user.getUserAbschluesse()}">
+				<li th:text="${ab.getName()}"></li>
+				<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/removeAbschlussOderKompetenz}"
+					  method="post">
+					<p><input type="hidden" class="form-control" name="secondid" th:value="${ab.getId()}"/></p>
 					<p><input type="hidden" class="form-control" name="mode" value="1"/></p>
 					<div class="col-sm-3" style="margin:0 auto;">
-						<input class="btn btn-outline-dark" type="submit" value="bestätigen"/>
+						<input class="btn btn-outline-dark" type="submit" value="Löschen"/>
 					</div>
 				</form>
-				<h5>Meine Kompetenzen:</h5>
-				<ul th:each="uk: ${user.getUserKompetenzen()}">
-					<li th:text="${uk.getName()}"></li>
-					<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/removeAbschlussOderKompetenz}" method="post">
-						<p><input type="hidden" class="form-control" name="secondid" th:value="${uk.getId()}"/></p>
-						<p><input type="hidden" class="form-control" name="mode" value="2"/></p>
-						<div class="col-sm-3" style="margin:0 auto;">
-							<input class="btn btn-outline-dark" type="submit" value="Löschen"/>
-						</div>
-					</form>
-				</ul>
-				<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/addAbschlussOderKompetenz}" method="post">
-					<select name="secondid" class="form-select m-4">
-						<option value="" selected>Wähle eine Kompetenz aus:</option>
-						<option th:each="kompetenz: ${kompetenzen}" th:value="${kompetenz.getId()}" th:text="${kompetenz.getName()}">
-						</option>
-					</select>
+			</ul>
+			<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/addAbschlussOderKompetenz}"
+				  method="post">
+				<select name="secondid" class="form-select m-4">
+					<option value="" selected>Wähle einen Abschluss aus:</option>
+					<option th:each="abschluss: ${abschluesse}" th:value="${abschluss.getId()}"
+							th:text="${abschluss.getName()}">
+					</option>
+				</select>
+				<p><input type="hidden" class="form-control" name="mode" value="1"/></p>
+				<div class="col-sm-3" style="margin:0 auto;">
+					<input class="btn btn-outline-dark" type="submit" value="bestätigen"/>
+				</div>
+			</form>
+			<h5>Meine Kompetenzen:</h5>
+			<ul th:each="uk: ${user.getUserKompetenzen()}">
+				<li th:text="${uk.getName()}"></li>
+				<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/removeAbschlussOderKompetenz}"
+					  method="post">
+					<p><input type="hidden" class="form-control" name="secondid" th:value="${uk.getId()}"/></p>
 					<p><input type="hidden" class="form-control" name="mode" value="2"/></p>
 					<div class="col-sm-3" style="margin:0 auto;">
-						<input class="btn btn-outline-dark" type="submit" value="bestätigen"/>
+						<input class="btn btn-outline-dark" type="submit" value="Löschen"/>
 					</div>
 				</form>
-				<h5>Bookmarks: </h5>
-				<div th:each="bookmark: ${user.getOffenenStellenBookmarks()}" class="border border-dark rounded-3 p-2 m-2">
-					<p th:text="${'Beschreibung: ' + bookmark.getBeschreibung()}"></p>
-					<p th:text="${'Gehalt: ' + bookmark.getGehalt() + '€ pro monat'}"></p>
-					<p th:text="${'Email: ' + emailList.get(user.getOffenenStellenBookmarks().indexOf(bookmark))}"></p>
-					<span>Kompetenzen: </span>
-					<ul th:each=" kompetenz: ${bookmark.getOffeneStelleKompetenzen()}">
-						<li th:text="${kompetenz.getName()}"></li>
-					</ul>
-					<form th:object="${bookmarkTransfer.setSecondId(bookmark.getId())}"></form>
-					<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/secure}" th:object="${bookmarkTransfer}"  method="post">
-						<p><input type="hidden" th:field="*{roleId}"/></p>
-						<p><input type="hidden" th:field="*{secondId}"/></p>
-						<div class="col-sm-3" style="margin:0 auto;">
-							<input class="btn btn-outline-dark" type="submit" value="Löschen"/>
-						</div>
-					</form>
+			</ul>
+			<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/addAbschlussOderKompetenz}"
+				  method="post">
+				<select name="secondid" class="form-select m-4">
+					<option value="" selected>Wähle eine Kompetenz aus:</option>
+					<option th:each="kompetenz: ${kompetenzen}" th:value="${kompetenz.getId()}"
+							th:text="${kompetenz.getName()}">
+					</option>
+				</select>
+				<p><input type="hidden" class="form-control" name="mode" value="2"/></p>
+				<div class="col-sm-3" style="margin:0 auto;">
+					<input class="btn btn-outline-dark" type="submit" value="bestätigen"/>
 				</div>
+			</form>
+			<h5>Bookmarks: </h5>
+			<div th:each="bookmark: ${user.getOffenenStellenBookmarks()}" class="border border-dark rounded-3 p-2 m-2">
+				<p th:text="${'Beschreibung: ' + bookmark.getBeschreibung()}"></p>
+				<p th:text="${'Gehalt: ' + bookmark.getGehalt() + '€ pro monat'}"></p>
+				<p th:text="${'Email: ' + emailList.get(user.getOffenenStellenBookmarks().indexOf(bookmark))}"></p>
+				<span>Kompetenzen: </span>
+				<ul th:each=" kompetenz: ${bookmark.getOffeneStelleKompetenzen()}">
+					<li th:text="${kompetenz.getName()}"></li>
+				</ul>
+				<form th:object="${bookmarkTransfer.setSecondId(bookmark.getId())}"></form>
+				<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/secure}"
+					  th:object="${bookmarkTransfer}" method="post">
+					<p><input type="hidden" th:field="*{roleId}"/></p>
+					<p><input type="hidden" th:field="*{secondId}"/></p>
+					<div class="col-sm-3" style="margin:0 auto;">
+						<input class="btn btn-outline-dark" type="submit" value="Löschen"/>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
+</div>
 </body>
 </html>

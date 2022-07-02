@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
 	  layout:decorate="~{layout}">
 <head>
 	<meta charset="UTF-8">
@@ -9,6 +8,7 @@
 </head>
 <body>
 <div layout:fragment="content">
+
 	<div th:switch="${user.getRoleId()}">
 		<div th:case="1">
 			<h5>Meine Daten:</h5>
