@@ -5,6 +5,14 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>JobBörse </title>
+	<style>
+		.abschluss{
+			width: 45%;
+		}
+		.kompetenz{
+			width: 45%;
+		}
+	</style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -31,7 +39,7 @@
 			<div th:each="offen: ${offeneStellen}">
 				<div th:if="${offen.isEnabled()}" class="border border-dark rounded-3 p-2 m-2">
 					<p th:text="${'Beschreibung: ' + offen.getBeschreibung()}"></p>
-					<p th:text="${'Gehalt: ' + offen.getGehalt()}"></p>
+					<p th:text="${'Gehalt: ' + offen.getGehalt() + '€ pro monat'}"></p>
 					<span>Kompetenzen: </span>
 					<ul th:each=" kompetenz: ${offen.getOffeneStelleKompetenzen()}">
 						<li th:text="${kompetenz.getBeschreibung()}"></li>
@@ -39,7 +47,7 @@
 					<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/offeneStellenDelete}"
 						  method="post">
 						<p><input type="hidden" class="form-control" name="secondid" th:value="${offen.getId()}"/></p>
-						<div class="col-sm-3" style="margin:0 auto;">
+						<div class="col-sm-3" style="margin-left: 95%">
 							<input class="btn btn-outline-dark" type="submit" value="Löschen"/>
 						</div>
 					</form>
@@ -68,7 +76,7 @@
 				<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/secure}" th:object="${bookmarkTransfer}" method="post">
 					<p><input type="hidden" th:field="*{roleId}"/></p>
 					<p><input type="hidden" th:field="*{secondId}"/></p>
-					<div class="col-sm-3" style="margin:0 auto;">
+					<div class="col-sm-3"  style="margin-left: 95%">
 						<input class="btn btn-outline-dark" type="submit" value="Löschen"/>
 					</div>
 				</form>
@@ -97,21 +105,21 @@
 					  method="post">
 					<p><input type="hidden" class="form-control" name="secondid" th:value="${ab.getId()}"/></p>
 					<p><input type="hidden" class="form-control" name="mode" value="1"/></p>
-					<div class="col-sm-3" style="margin:0 auto;">
+					<div class="col-sm-3" style="margin-left: 95%">
 						<input class="btn btn-outline-dark" type="submit" value="Löschen"/>
 					</div>
 				</form>
 			</ul>
 			<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/addAbschlussOderKompetenz}"
 				  method="post">
-				<select name="secondid" class="form-select m-4">
+				<select name="secondid" class="form-select m-4 abschluss">
 					<option value="" selected>Wähle einen Abschluss aus:</option>
 					<option th:each="abschluss: ${abschluesse}" th:value="${abschluss.getId()}"
 							th:text="${abschluss.getName()}">
 					</option>
 				</select>
 				<p><input type="hidden" class="form-control" name="mode" value="1"/></p>
-				<div class="col-sm-3" style="margin:0 auto;">
+				<div class="col-sm-3" style="margin-left: 95%">
 					<input class="btn btn-outline-dark" type="submit" value="bestätigen"/>
 				</div>
 			</form>
@@ -122,21 +130,21 @@
 					  method="post">
 					<p><input type="hidden" class="form-control" name="secondid" th:value="${uk.getId()}"/></p>
 					<p><input type="hidden" class="form-control" name="mode" value="2"/></p>
-					<div class="col-sm-3" style="margin:0 auto;">
+					<div class="col-sm-3" style="margin-left: 95%">
 						<input class="btn btn-outline-dark" type="submit" value="Löschen"/>
 					</div>
 				</form>
 			</ul>
 			<form action="#" class="col-sm-9" style="margin:0 auto;" th:action="@{/addAbschlussOderKompetenz}"
 				  method="post">
-				<select name="secondid" class="form-select m-4">
+				<select name="secondid" class="form-select m-4 kompetenz">
 					<option value="" selected>Wähle eine Kompetenz aus:</option>
 					<option th:each="kompetenz: ${kompetenzen}" th:value="${kompetenz.getId()}"
 							th:text="${kompetenz.getName()}">
 					</option>
 				</select>
 				<p><input type="hidden" class="form-control" name="mode" value="2"/></p>
-				<div class="col-sm-3" style="margin:0 auto;">
+				<div class="col-sm-3" style="margin-left: 95%">
 					<input class="btn btn-outline-dark" type="submit" value="bestätigen"/>
 				</div>
 			</form>
@@ -154,7 +162,7 @@
 					  th:object="${bookmarkTransfer}" method="post">
 					<p><input type="hidden" th:field="*{roleId}"/></p>
 					<p><input type="hidden" th:field="*{secondId}"/></p>
-					<div class="col-sm-3" style="margin:0 auto;">
+					<div class="col-sm-3" style="margin-left: 95%">
 						<input class="btn btn-outline-dark" type="submit" value="Löschen"/>
 					</div>
 				</form>
