@@ -24,7 +24,7 @@
     <h5>Meine Daten:</h5>
     <span>Beschreibung:</span>
     <p><input type="text" th:value="${DataTransfer.getBeschreibung()}" maxlength="255" th:field="*{beschreibung}"/></p>
-    <span>Gehalt:</span>
+    <span>Gehalt (in € pro monat):</span>
     <p><input type="text" th:value="${DataTransfer.getGehalt()}" maxlength="11" th:field="*{gehalt}"/></p>
     <p><input type="hidden" class="form-control" name="id" th:value="${DataTransfer.getId()}" th:field="*{id}"/></p>
     <ul th:each="kompetenz: ${DataTransfer.getOffeneStelleKompetenzen()}">
